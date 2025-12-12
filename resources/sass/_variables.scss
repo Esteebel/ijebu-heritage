@@ -1,0 +1,78 @@
+// Import Bootstrap functions first
+@import "~bootstrap/scss/functions";
+
+// Override Bootstrap variables before importing Bootstrap
+$primary: #B08B4F; // Gold accent
+$secondary: #7DB118; // Muted green accent
+$dark: #0C1B2A; // Deep navy
+$light: #F8F5F0; // Light parchment
+$info: #5D9CEC;
+$success: #7DB118;
+$warning: #FCBB42;
+$danger: #ED5565;
+
+// Theme colors
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "dark": $dark,
+  "light": $light,
+  "info": $info,
+  "success": $success,
+  "warning": $warning,
+  "danger": $danger
+);
+
+// Body
+$body-bg: #EDE6DC; // Warm parchment color
+$body-color: $dark;
+
+// Typography
+$font-family-serif: 'Playfair Display', Georgia, serif;
+$font-family-sans-serif: 'Inter', 'Roboto', sans-serif;
+$font-size-base: 1rem;
+$line-height-base: 1.6;
+
+// Spacing
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: ($spacer * 0.25),
+  2: ($spacer * 0.5),
+  3: $spacer,
+  4: ($spacer * 1.5),
+  5: ($spacer * 3),
+  6: ($spacer * 4),
+  7: ($spacer * 6),
+  8: ($spacer * 8),
+  9: ($spacer * 10),
+  10: ($spacer * 12),
+  11: ($spacer * 16),
+  12: ($spacer * 20),
+  13: ($spacer * 24)
+);
+
+// Cards
+$card-border-radius: 1rem;
+$card-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+$card-border-color: rgba(0, 0, 0, 0.1);
+
+// Buttons
+$btn-border-radius: 50px; // Pill-shaped
+$btn-padding-y: 0.75rem;
+$btn-padding-x: 1.75rem;
+$btn-font-weight: 600;
+$btn-transition: all 0.3s ease-in-out;
+
+// Border Radius
+$border-radius: 0.5rem;
+$border-radius-lg: 0.75rem;
+$border-radius-sm: 0.25rem;
+$border-radius-xl: 1.25rem;
+$border-radius-xxl: 2rem;
+
+// Shadows
+$box-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+$box-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+$box-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.2);
