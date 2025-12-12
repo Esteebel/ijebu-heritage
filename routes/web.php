@@ -6,6 +6,8 @@ use App\Http\Controllers\KingController;
 use App\Http\Controllers\TimelineController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ArtifactController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TourController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,8 @@ Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 Route::get('/exhibits', [ArtifactController::class, 'index'])->name('exhibits.index');
 Route::get('/exhibits/{artifact}', [ArtifactController::class, 'show'])->name('exhibits.show');
+Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
+Route::get('/virtual-tour', [TourController::class, 'index'])->name('tour.index');
 
 // Gallery route pointing to exhibits
 Route::get('/gallery', [ArtifactController::class, 'index'])->name('gallery.index');
