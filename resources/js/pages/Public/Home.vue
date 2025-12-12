@@ -313,14 +313,14 @@
                                             guided tours.
                                         </p>
                                         <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
-                                            <button
+                                            <a href="/tickets"
                                                 class="btn btn-dark btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg hover-lift">
                                                 Get Tickets
-                                            </button>
-                                            <button
+                                            </a>
+                                            <a href="/virtual-tour"
                                                 class="btn btn-outline-dark btn-lg px-5 py-3 rounded-pill fw-bold hover-lift">
                                                 Virtual Tour
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
