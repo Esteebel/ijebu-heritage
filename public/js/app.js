@@ -7589,6 +7589,14 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'Home',
+  props: {
+    featuredKings: {
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    }
+  },
   components: {
     AppLayout: _layouts_AppLayout_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -7626,10 +7634,24 @@ __webpack_require__.r(__webpack_exports__);
     route: function route(name, params) {
       // Simple route helper for demonstration
       // In a real app, you'd use Ziggy or similar
-      var routes = {
-        'kings.show': "/kings/".concat(params)
-      };
-      return routes[name] || '#';
+      if (name === 'kings.show' && params) {
+        return "/kings/".concat(params);
+      }
+      return '#';
+    },
+    getDisplayedKings: function getDisplayedKings(kings, limit) {
+      // If we have fewer kings than the limit, duplicate some to fill the space
+      if (kings.length >= limit) {
+        return kings.slice(0, limit);
+      }
+
+      // Duplicate kings to reach the desired limit
+      var displayedKings = [];
+      for (var i = 0; i < limit; i++) {
+        var kingIndex = i % kings.length;
+        displayedKings.push(kings[kingIndex]);
+      }
+      return displayedKings;
     }
   }
 });
@@ -9748,10 +9770,16 @@ var render = function render() {
     staticClass: "lead text-light opacity-90 mb-5 fs-3 animate__animated animate__fadeInUp animate__delay-1s"
   }, [_vm._v("\n                            Journey through centuries of monarchy, explore magnificent artifacts, and uncover the\n                            fascinating stories of kings and queens who shaped history.\n                        ")]), _vm._v(" "), _c("div", {
     staticClass: "d-flex flex-column flex-md-row justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s"
-  }, [_c("button", {
-    staticClass: "btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg hover-lift"
-  }, [_vm._v("\n                                Explore Exhibits\n                            ")]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold hover-lift"
+  }, [_c("a", {
+    staticClass: "btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg hover-lift",
+    attrs: {
+      href: "/exhibits"
+    }
+  }, [_vm._v("\n                                Explore Exhibits\n                            ")]), _vm._v(" "), _c("a", {
+    staticClass: "btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold hover-lift",
+    attrs: {
+      href: "/timeline"
+    }
   }, [_vm._v("\n                                View Timeline\n                            ")])])])])]), _vm._v(" "), _c("div", {
     staticClass: "slider-controls position-absolute bottom-0 start-0 w-100 d-flex justify-content-center pb-4 z-3"
   }, [_c("div", {
@@ -9794,9 +9822,9 @@ var render = function render() {
     staticClass: "bi bi-arrow-right ms-2"
   })])])]), _vm._v(" "), _c("div", {
     staticClass: "row g-4"
-  }, _vm._l(_vm.featuredKings, function (king, index) {
+  }, [_vm.featuredKings && _vm.featuredKings.length > 0 ? _vm._l(_vm.getDisplayedKings(_vm.featuredKings, 3), function (king, index) {
     return _c("div", {
-      key: king.id,
+      key: index + "-" + king.id,
       staticClass: "col-12 col-md-6 col-lg-4 animate__animated animate__fadeInUp",
       style: {
         "animation-delay": index * 0.1 + 0.1 + "s"
@@ -9808,9 +9836,15 @@ var render = function render() {
       staticStyle: {
         height: "200px"
       }
-    }, [_c("span", {
+    }, [king.portraitMedia && king.portraitMedia.path ? [_c("img", {
+      staticClass: "w-100 h-100 object-fit-cover",
+      attrs: {
+        src: "/storage/" + king.portraitMedia.path,
+        alt: king.name
+      }
+    })] : [_c("span", {
       staticClass: "text-light"
-    }, [_vm._v(_vm._s(king.name))])]), _vm._v(" "), _c("div", {
+    }, [_vm._v(_vm._s(king.name))])]], 2), _vm._v(" "), _c("div", {
       staticClass: "card-body d-flex flex-column"
     }, [_c("div", {
       staticClass: "d-flex justify-content-between align-items-start mb-3"
@@ -9819,19 +9853,23 @@ var render = function render() {
     }, [_vm._v(_vm._s(king.name))]), _vm._v(" "), _c("span", {
       staticClass: "badge",
       "class": {
-        "bg-primary-subtle text-primary": king.dynasty && king.dynasty.name.includes("Tudor"),
-        "bg-success-subtle text-success": king.dynasty && king.dynasty.name.includes("Stuart"),
-        "bg-warning-subtle text-warning": king.dynasty && king.dynasty.name.includes("York")
+        "bg-primary-subtle text-primary": king.dynasty && king.dynasty.name && king.dynasty.name.includes("Tudor"),
+        "bg-success-subtle text-success": king.dynasty && king.dynasty.name && king.dynasty.name.includes("Stuart"),
+        "bg-warning-subtle text-warning": king.dynasty && king.dynasty.name && king.dynasty.name.includes("York")
       }
-    }, [_vm._v("\n                                          " + _vm._s(king.dynasty ? king.dynasty.name : "Unknown Dynasty") + "\n                                        ")])]), _vm._v(" "), _c("p", {
+    }, [_vm._v("\n                                                        " + _vm._s(king.dynasty ? king.dynasty.name : "Unknown Dynasty") + "\n                                                    ")])]), _vm._v(" "), _c("p", {
       staticClass: "text-muted flex-grow-1"
     }, [_vm._v(_vm._s(king.short_bio))]), _vm._v(" "), _c("a", {
       staticClass: "btn btn-outline-primary mt-3",
       attrs: {
         href: _vm.route("kings.show", king.id)
       }
-    }, [_vm._v("\n                                        Read Biography\n                                      ")])])])]);
-  }), 0)]), _vm._v(" "), _c("section", {
+    }, [_vm._v("\n                                                    Read Biography\n                                                ")])])])]);
+  }) : [_c("div", {
+    staticClass: "col-12"
+  }, [_c("p", {
+    staticClass: "text-muted text-center"
+  }, [_vm._v("No featured kings available at the moment.")])])]], 2)]), _vm._v(" "), _c("section", {
     staticClass: "gallery-section mb-5"
   }, [_c("div", {
     staticClass: "row mb-4"
@@ -10037,8 +10075,11 @@ var render = function render() {
     staticClass: "d-flex justify-content-between align-items-center"
   }, [_c("span", {
     staticClass: "text-muted small"
-  }, [_vm._v("Main Hall, Kingdom Museum")]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-outline-primary btn-sm"
+  }, [_vm._v("Main Hall, Kingdom Museum")]), _vm._v(" "), _c("a", {
+    staticClass: "btn btn-outline-primary btn-sm",
+    attrs: {
+      href: "/events"
+    }
   }, [_vm._v("Learn More")])])])])]), _vm._v(" "), _c("div", {
     staticClass: "col-12 col-lg-6"
   }, [_c("div", {
@@ -10057,8 +10098,11 @@ var render = function render() {
     staticClass: "d-flex justify-content-between align-items-center"
   }, [_c("span", {
     staticClass: "text-muted small"
-  }, [_vm._v("Gallery 3, Kingdom Museum")]), _vm._v(" "), _c("button", {
-    staticClass: "btn btn-outline-primary btn-sm"
+  }, [_vm._v("Gallery 3, Kingdom Museum")]), _vm._v(" "), _c("a", {
+    staticClass: "btn btn-outline-primary btn-sm",
+    attrs: {
+      href: "/events"
+    }
   }, [_vm._v("Learn More")])])])])])])]), _vm._v(" "), _c("section", {
     staticClass: "cta-section bg-gradient rounded-4 p-5 text-center"
   }, [_c("div", {
@@ -13724,7 +13768,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n/* Full width section to break out of container */\n.full-width-section[data-v-c284a128] {\n    margin-left: calc(50% - 50vw);\n    margin-right: calc(50% - 50vw);\n    width: 100vw;\n}\n\n/* Hero Section Styles */\n.hero-section[data-v-c284a128] {\n    min-height: 100vh;\n    background-color: #000;\n}\n\n/* Slider Styles */\n.slider-container[data-v-c284a128] {\n    overflow: hidden;\n}\n.slide[data-v-c284a128] {\n    background-size: cover;\n    background-position: center;\n    background-repeat: no-repeat;\n    transition: transform 1s ease-in-out;\n}\n\n/* Overlay for better text visibility */\n.hero-overlay[data-v-c284a128] {\n    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));\n}\n\n/* Content Styles */s\n.hero-content[data-v-c284a128] {\n    backdrop-filter: blur(2px);\n}\n\n/* Slider Controls */\n.slider-controls[data-v-c284a128] {\n    pointer-events: none;\n}\n.slider-indicators[data-v-c284a128] {\n    pointer-events: auto;\n}\n.indicator-btn[data-v-c284a128] {\n    width: 12px;\n    height: 12px;\n    background-color: rgba(255, 255, 255, 0.5);\n    cursor: pointer;\n    transition: all 0.3s ease;\n}\n.indicator-btn.active[data-v-c284a128] {\n    background-color: #fff;\n    transform: scale(1.2);\n}\n.indicator-btn[data-v-c284a128]:hover:not(.active) {\n    background-color: rgba(255, 255, 255, 0.8);\n    transform: scale(1.1);\n}\n\n/* Hover lift effect */\n.hover-lift[data-v-c284a128] {\n    transition: all 0.3s ease;\n}\n.hover-lift[data-v-c284a128]:hover {\n    transform: translateY(-10px);\n    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15) !important;\n}\n\n/* Hover effect for links */\n.hover-effect[data-v-c284a128] {\n    position: relative;\n    transition: all 0.3s ease;\n}\n.hover-effect[data-v-c284a128]::after {\n    content: '';\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    width: 0;\n    height: 2px;\n    background-color: var(--bs-primary);\n    transition: width 0.3s ease;\n}\n.hover-effect[data-v-c284a128]:hover {\n    color: var(--bs-primary) !important;\n}\n.hover-effect[data-v-c284a128]:hover::after {\n    width: 100%;\n}\n\n/* Background gradient */\n.bg-gradient[data-v-c284a128] {\n    background: linear-gradient(135deg, #B08B4F 0%, #7DB118 100%);\n}\n\n/* Gallery Items */\n.gallery-item[data-v-c284a128] {\n    transition: all 0.3s ease;\n}\n.gallery-item[data-v-c284a128]:hover {\n    transform: scale(1.03);\n    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;\n}\n\n/* Animations */\n@keyframes fadeInUp-c284a128 {\nfrom {\n        opacity: 0;\n        transform: translateY(30px);\n}\nto {\n        opacity: 1;\n        transform: translateY(0);\n}\n}\n.animate__fadeInUp[data-v-c284a128] {\n    animation: fadeInUp-c284a128 0.8s ease-out forwards;\n}\n@keyframes fadeInDown-c284a128 {\nfrom {\n        opacity: 0;\n        transform: translateY(-30px);\n}\nto {\n        opacity: 1;\n        transform: translateY(0);\n}\n}\n.animate__fadeInDown[data-v-c284a128] {\n    animation: fadeInDown-c284a128 0.8s ease-out forwards;\n}\n\n/* Responsive adjustments */\n@media (max-width: 768px) {\n.hero-content[data-v-c284a128] {\n        padding-top: 2rem;\n        padding-bottom: 2rem;\n}\n.hero-section h1[data-v-c284a128] {\n        font-size: 2rem;\n}\n.hero-section .lead[data-v-c284a128] {\n        font-size: 1.0rem;\n}\n.full-width-section[data-v-c284a128] {\n        margin-left: -15px;\n        margin-right: -15px;\n        width: calc(100% + 30px);\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n/* Full width section to break out of container */\n.full-width-section[data-v-c284a128] {\n    margin-left: calc(50% - 50vw);\n    margin-right: calc(50% - 50vw);\n    width: 100vw;\n}\n\n/* Hero Section Styles */\n.hero-section[data-v-c284a128] {\n    min-height: 100vh;\n    background-color: #000;\n}\n\n/* Slider Styles */\n.slider-container[data-v-c284a128] {\n    overflow: hidden;\n}\n.slide[data-v-c284a128] {\n    background-size: cover;\n    background-position: center;\n    background-repeat: no-repeat;\n    transition: transform 1s ease-in-out;\n}\n\n/* Overlay for better text visibility */\n.hero-overlay[data-v-c284a128] {\n    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));\n}\n\n/* Content Styles */\ns .hero-content[data-v-c284a128] {\n    backdrop-filter: blur(2px);\n}\n\n/* Slider Controls */\n.slider-controls[data-v-c284a128] {\n    pointer-events: none;\n}\n.slider-indicators[data-v-c284a128] {\n    pointer-events: auto;\n}\n.indicator-btn[data-v-c284a128] {\n    width: 12px;\n    height: 12px;\n    background-color: rgba(255, 255, 255, 0.5);\n    cursor: pointer;\n    transition: all 0.3s ease;\n}\n.indicator-btn.active[data-v-c284a128] {\n    background-color: #fff;\n    transform: scale(1.2);\n}\n.indicator-btn[data-v-c284a128]:hover:not(.active) {\n    background-color: rgba(255, 255, 255, 0.8);\n    transform: scale(1.1);\n}\n\n/* Hover lift effect */\n.hover-lift[data-v-c284a128] {\n    transition: all 0.3s ease;\n}\n.hover-lift[data-v-c284a128]:hover {\n    transform: translateY(-10px);\n    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15) !important;\n}\n\n/* Hover effect for links */\n.hover-effect[data-v-c284a128] {\n    position: relative;\n    transition: all 0.3s ease;\n}\n.hover-effect[data-v-c284a128]::after {\n    content: '';\n    position: absolute;\n    bottom: 0;\n    left: 0;\n    width: 0;\n    height: 2px;\n    background-color: var(--bs-primary);\n    transition: width 0.3s ease;\n}\n.hover-effect[data-v-c284a128]:hover {\n    color: var(--bs-primary) !important;\n}\n.hover-effect[data-v-c284a128]:hover::after {\n    width: 100%;\n}\n\n/* Background gradient */\n.bg-gradient[data-v-c284a128] {\n    background: linear-gradient(135deg, #B08B4F 0%, #7DB118 100%);\n}\n\n/* Gallery Items */\n.gallery-item[data-v-c284a128] {\n    transition: all 0.3s ease;\n}\n.gallery-item[data-v-c284a128]:hover {\n    transform: scale(1.03);\n    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;\n}\n\n/* Animations */\n@keyframes fadeInUp-c284a128 {\nfrom {\n        opacity: 0;\n        transform: translateY(30px);\n}\nto {\n        opacity: 1;\n        transform: translateY(0);\n}\n}\n.animate__fadeInUp[data-v-c284a128] {\n    animation: fadeInUp-c284a128 0.8s ease-out forwards;\n}\n@keyframes fadeInDown-c284a128 {\nfrom {\n        opacity: 0;\n        transform: translateY(-30px);\n}\nto {\n        opacity: 1;\n        transform: translateY(0);\n}\n}\n.animate__fadeInDown[data-v-c284a128] {\n    animation: fadeInDown-c284a128 0.8s ease-out forwards;\n}\n\n/* Responsive adjustments */\n@media (max-width: 768px) {\n.hero-content[data-v-c284a128] {\n        padding-top: 2rem;\n        padding-bottom: 2rem;\n}\n.hero-section h1[data-v-c284a128] {\n        font-size: 2rem;\n}\n.hero-section .lead[data-v-c284a128] {\n        font-size: 1.0rem;\n}\n.full-width-section[data-v-c284a128] {\n        margin-left: -15px;\n        margin-right: -15px;\n        width: calc(100% + 30px);\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
