@@ -11,7 +11,7 @@ class PublicController extends BaseController
     public function home()
     {
         // Fetch featured kings for the home page
-        $featuredKings = King::with('dynasty')
+        $featuredKings = King::with('dynasty', 'portraitMedia')
             ->where('featured', true)
             ->limit(3)
             ->get();

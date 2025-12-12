@@ -31,13 +31,13 @@
                             </p>
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
-                                <button
+                                <a href="/exhibits"
                                     class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg hover-lift">
                                     Explore Exhibits
-                                </button>
-                                <button class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold hover-lift">
+                                </a>
+                                <a href="/timeline" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold hover-lift">
                                     View Timeline
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -74,33 +74,48 @@
 
                                 <div class="row g-4">
                                     <!-- Featured Kings from Database -->
-                                    <div v-for="(king, index) in featuredKings" :key="king.id"
-                                        class="col-12 col-md-6 col-lg-4 animate__animated animate__fadeInUp"
-                                        :style="{ 'animation-delay': (index * 0.1 + 0.1) + 's' }">
-                                        <div class="card h-100 border-0 shadow-sm hover-lift">
-                                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
-                                                style="height: 200px;">
-                                                <span class="text-light">{{ king.name }}</span>
-                                            </div>
-                                            <div class="card-body d-flex flex-column">
-                                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                                    <h3 class="h4 fw-bold text-dark mb-0">{{ king.name }}</h3>
-                                                    <span class="badge" :class="{
-                                                        'bg-primary-subtle text-primary': king.dynasty && king.dynasty.name.includes('Tudor'),
-                                                        'bg-success-subtle text-success': king.dynasty && king.dynasty.name.includes('Stuart'),
-                                                        'bg-warning-subtle text-warning': king.dynasty && king.dynasty.name.includes('York')
-                                                    }">
-                                                        {{ king.dynasty ? king.dynasty.name : 'Unknown Dynasty' }}
-                                                    </span>
+                                    <template v-if="featuredKings && featuredKings.length > 0">
+                                        <div v-for="(king, index) in getDisplayedKings(featuredKings, 3)" :key="index + '-' + king.id"
+                                            class="col-12 col-md-6 col-lg-4 animate__animated animate__fadeInUp"
+                                            :style="{ 'animation-delay': (index * 0.1 + 0.1) + 's' }">
+                                            <div class="card h-100 border-0 shadow-sm hover-lift">
+                                                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+                                                    style="height: 200px;">
+                                                    <template v-if="king.portraitMedia && king.portraitMedia.path">
+                                                        <img :src="'/storage/' + king.portraitMedia.path"
+                                                             :alt="king.name"
+                                                             class="w-100 h-100 object-fit-cover">
+                                                    </template>
+                                                    <template v-else>
+                                                        <span class="text-light">{{ king.name }}</span>
+                                                    </template>
                                                 </div>
-                                                <p class="text-muted flex-grow-1">{{ king.short_bio }}</p>
-                                                <a :href="route('kings.show', king.id)"
-                                                    class="btn btn-outline-primary mt-3">
-                                                    Read Biography
-                                                </a>
+                                                <div class="card-body d-flex flex-column">
+                                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                                        <h3 class="h4 fw-bold text-dark mb-0">{{ king.name }}</h3>
+                                                        <span class="badge" :class="{
+                                                            'bg-primary-subtle text-primary': king.dynasty && king.dynasty.name && king.dynasty.name.includes('Tudor'),
+                                                            'bg-success-subtle text-success': king.dynasty && king.dynasty.name && king.dynasty.name.includes('Stuart'),
+                                                            'bg-warning-subtle text-warning': king.dynasty && king.dynasty.name && king.dynasty.name.includes('York')
+                                                        }">
+                                                            {{ king.dynasty ? king.dynasty.name : 'Unknown Dynasty' }}
+                                                        </span>
+                                                    </div>
+                                                    <p class="text-muted flex-grow-1">{{ king.short_bio }}</p>
+                                                    <a :href="route('kings.show', king.id)"
+                                                        class="btn btn-outline-primary mt-3">
+                                                        Read Biography
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </template>
+                                    <template v-else>
+                                        <!-- Fallback content when no featured kings -->
+                                        <div class="col-12">
+                                            <p class="text-muted text-center">No featured kings available at the moment.</p>
+                                        </div>
+                                    </template>
                                 </div>
                             </section>
 
@@ -261,7 +276,7 @@
                                                     royal history with guest speakers and exhibitions.</p>
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <span class="text-muted small">Main Hall, Kingdom Museum</span>
-                                                    <button class="btn btn-outline-primary btn-sm">Learn More</button>
+                                                    <a href="/events" class="btn btn-outline-primary btn-sm">Learn More</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -280,7 +295,7 @@
                                                     stories from the Tudor Dynasty.</p>
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <span class="text-muted small">Gallery 3, Kingdom Museum</span>
-                                                    <button class="btn btn-outline-primary btn-sm">Learn More</button>
+                                                    <a href="/events" class="btn btn-outline-primary btn-sm">Learn More</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -326,6 +341,12 @@ import AppLayout from '../../layouts/AppLayout.vue'
 
 export default {
     name: 'Home',
+    props: {
+        featuredKings: {
+            type: Array,
+            default: () => []
+        },
+    },
     components: {
         AppLayout,
     },
@@ -366,10 +387,24 @@ export default {
         route(name, params) {
             // Simple route helper for demonstration
             // In a real app, you'd use Ziggy or similar
-            const routes = {
-                'kings.show': `/kings/${params}`
-            };
-            return routes[name] || '#';
+            if (name === 'kings.show' && params) {
+                return `/kings/${params}`;
+            }
+            return '#';
+        },
+        getDisplayedKings(kings, limit) {
+            // If we have fewer kings than the limit, duplicate some to fill the space
+            if (kings.length >= limit) {
+                return kings.slice(0, limit);
+            }
+
+            // Duplicate kings to reach the desired limit
+            const displayedKings = [];
+            for (let i = 0; i < limit; i++) {
+                const kingIndex = i % kings.length;
+                displayedKings.push(kings[kingIndex]);
+            }
+            return displayedKings;
         }
     }
 }
