@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\King;
+use App\Models\Dynasty;
 use Inertia\Inertia;
 
 class KingController extends Controller
@@ -17,7 +18,8 @@ class KingController extends Controller
 
     public function create()
     {
-        return Inertia::render('Admin/Kings/Form');
+        $dynasties = Dynasty::all();
+        return Inertia::render('Admin/Kings/Form', compact('dynasties'));
     }
 
     public function store(Request $request)
@@ -49,8 +51,9 @@ class KingController extends Controller
 
     public function edit(King $king)
     {
+        $dynasties = Dynasty::all();
         $king->load('dynasty', 'portraitMedia');
-        return Inertia::render('Admin/Kings/Form', compact('king'));
+        return Inertia::render('Admin/Kings/Form', compact('king', 'dynasties'));
     }
 
     public function update(Request $request, King $king)

@@ -2,10 +2,10 @@
   <admin-layout>
     <div class="container-fluid py-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0">{{ king.name }}</h1>
+        <h1 class="h3 mb-0">{{ dynasty.name }}</h1>
         <div>
           <inertia-link
-            :href="$route('admin.kings.edit', king.id)"
+            :href="$route('admin.dynasties.edit', dynasty.id)"
             class="btn btn-primary me-2"
           >
             <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,7 +30,7 @@
         <div class="col-lg-8">
           <div class="card shadow-sm">
             <div class="card-header bg-white border-bottom">
-              <h5 class="card-title mb-0">King Information</h5>
+              <h5 class="card-title mb-0">Dynasty Information</h5>
             </div>
             <div class="card-body">
               <div class="row mb-3">
@@ -38,44 +38,52 @@
                   <strong>Name</strong>
                 </div>
                 <div class="col-sm-9">
-                  {{ king.name }}
+                  {{ dynasty.name }}
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-sm-3">
-                  <strong>Dynasty</strong>
+                  <strong>Period</strong>
                 </div>
                 <div class="col-sm-9">
-                  {{ king.dynasty ? king.dynasty.name : 'Not specified' }}
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <div class="col-sm-3">
-                  <strong>Reign Start Date</strong>
-                </div>
-                <div class="col-sm-9">
-                  {{ king.reign_start_date || 'Not specified' }}
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <div class="col-sm-3">
-                  <strong>Reign End Date</strong>
-                </div>
-                <div class="col-sm-9">
-                  {{ king.reign_end_date || 'Not specified' }}
+                  {{ dynasty.start_year }} - {{ dynasty.end_year }}
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-sm-3">
-                  <strong>Biography</strong>
+                  <strong>Description</strong>
                 </div>
                 <div class="col-sm-9">
-                  {{ king.biography || 'Not provided' }}
+                  {{ dynasty.description || 'No description provided' }}
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card shadow-sm mt-4">
+            <div class="card-header bg-white border-bottom">
+              <h5 class="card-title mb-0">Associated Kings</h5>
+            </div>
+            <div class="card-body">
+              <div v-if="dynasty.kings && dynasty.kings.length > 0">
+                <div class="row">
+                  <div v-for="king in dynasty.kings" :key="king.id" class="col-md-6 mb-3">
+                    <div class="d-flex align-items-center">
+                      <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                        <span class="fw-bold">{{ king.name.charAt(0) }}</span>
+                      </div>
+                      <div>
+                        <strong>{{ king.name }}</strong>
+                        <div class="small text-muted">Reign: {{ king.reign_start_date }} - {{ king.reign_end_date }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div v-else>
+                <p class="mb-0 text-muted">No kings associated with this dynasty.</p>
               </div>
             </div>
           </div>
@@ -84,29 +92,22 @@
         <div class="col-lg-4">
           <div class="card shadow-sm">
             <div class="card-header bg-white border-bottom">
-              <h5 class="card-title mb-0">Publishing Status</h5>
+              <h5 class="card-title mb-0">Details</h5>
             </div>
             <div class="card-body">
-              <div class="d-flex align-items-center mb-3">
-                <div class="p-2 rounded-circle bg-success bg-opacity-10 me-3">
-                  <svg class="text-success" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </div>
-                <div>
-                  <h6 class="mb-0">Published</h6>
-                  <small class="text-muted">Visible to visitors</small>
-                </div>
+              <div class="mb-3">
+                <label class="form-label">Kings Count</label>
+                <input type="text" class="form-control" :value="dynasty.kings_count" readonly>
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Last Updated</label>
-                <input type="text" class="form-control" value="Dec 12, 2023" readonly>
+                <label class="form-label">Created At</label>
+                <input type="text" class="form-control" :value="dynasty.created_at" readonly>
               </div>
 
               <div class="mb-0">
-                <label class="form-label">Created By</label>
-                <input type="text" class="form-control" value="Editor John" readonly>
+                <label class="form-label">Last Updated</label>
+                <input type="text" class="form-control" :value="dynasty.updated_at" readonly>
               </div>
             </div>
           </div>
@@ -124,7 +125,7 @@ export default {
     AdminLayout,
   },
   props: {
-    king: Object,
+    dynasty: Object,
   },
   computed: {
     isAdmin() {
@@ -146,7 +147,7 @@ export default {
       });
 
       if (result.isConfirmed) {
-        this.$inertia.delete(this.$route('admin.kings.destroy', this.king.id));
+        this.$inertia.delete(this.$route('admin.dynasties.destroy', this.dynasty.id));
       }
     }
   }
