@@ -2,28 +2,29 @@
   <admin-layout>
     <div class="container-fluid py-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0">Manage Kings</h1>
+        <h1 class="h3 mb-0">Gallery Management</h1>
         <inertia-link
-          :href="$route('admin.kings.create')"
+          :href="$route('artifacts.create')"
           class="btn btn-primary"
         >
           <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
           </svg>
-          Add King
+          Add Artifact
         </inertia-link>
       </div>
 
       <div class="card shadow-sm">
         <div class="card-header bg-white border-bottom">
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">Kings List</h5>
+            <h5 class="card-title mb-0">Artifacts List</h5>
             <div class="d-flex">
-              <input type="text" class="form-control form-control-sm me-2" placeholder="Search kings...">
+              <input type="text" class="form-control form-control-sm me-2" placeholder="Search artifacts...">
               <select class="form-select form-select-sm">
-                <option>All Dynasties</option>
-                <option>Oduduwa Dynasty</option>
-                <option>Ijebu Dynasty</option>
+                <option>All Eras</option>
+                <option>Ancient Era</option>
+                <option>Medieval Era</option>
+                <option>Modern Era</option>
               </select>
             </div>
           </div>
@@ -32,44 +33,30 @@
           <table class="table table-hover mb-0">
             <thead class="table-light">
               <tr>
-                <th>King</th>
-                <th>Dynasty</th>
-                <th>Reign Period</th>
+                <th>Artifact</th>
+                <th>Era</th>
+                <th>Category</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="king in kings" :key="king.id">
+              <tr v-for="artifact in artifacts" :key="artifact.id">
                 <td>
-                  <div class="d-flex align-items-center">
-                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                      <span class="fw-bold">{{ king.name.charAt(0) }}</span>
-                    </div>
-                    <div>
-                      <strong>{{ king.name }}</strong>
-                      <div class="small text-muted">ID: {{ king.id }}</div>
-                    </div>
+                  <div>
+                    <strong>{{ artifact.title }}</strong>
+                    <div class="small text-muted">{{ artifact.description }}</div>
                   </div>
                 </td>
-                <td>{{ king.dynasty ? king.dynasty.name : 'Unknown Dynasty' }}</td>
-                <td>{{ king.reign_start }} - {{ king.reign_end }}</td>
+                <td>{{ artifact.era || 'No era specified' }}</td>
+                <td>{{ artifact.category || 'Uncategorized' }}</td>
                 <td>
                   <span class="badge bg-success">Published</span>
                 </td>
                 <td>
                   <div class="btn-group btn-group-sm">
                     <inertia-link
-                      :href="$route('admin.kings.show', king.id)"
-                      class="btn btn-outline-primary"
-                    >
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                      </svg>
-                    </inertia-link>
-                    <inertia-link
-                      :href="$route('admin.kings.edit', king.id)"
+                      :href="$route('artifacts.edit', artifact.id)"
                       class="btn btn-outline-secondary"
                     >
                       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,8 +64,7 @@
                       </svg>
                     </inertia-link>
                     <button
-                      v-if="isAdmin"
-                      @click="destroy(king.id)"
+                      @click="destroy(artifact.id)"
                       class="btn btn-outline-danger"
                     >
                       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,7 +80,7 @@
         <div class="card-footer bg-white border-top">
           <div class="d-flex justify-content-between align-items-center">
             <div class="text-muted small">
-              Showing {{ kings.length }} of {{ kings.length }} kings
+              Showing {{ artifacts.length }} of {{ artifacts.length }} artifacts
             </div>
             <nav>
               <ul class="pagination pagination-sm mb-0">
@@ -124,29 +110,12 @@ export default {
     AdminLayout,
   },
   props: {
-    kings: Array,
-  },
-  computed: {
-    isAdmin() {
-      return this.$page.props.auth &&
-             this.$page.props.auth.user &&
-             this.$page.props.auth.user.role === 'admin';
-    }
+    artifacts: Array,
   },
   methods: {
-    async destroy(id) {
-      const result = await this.$swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!'
-      });
-
-      if (result.isConfirmed) {
-        this.$inertia.delete(this.$route('admin.kings.destroy', id));
+    destroy(id) {
+      if (confirm('Are you sure you want to delete this artifact?')) {
+        this.$inertia.delete(this.$route('artifacts.destroy', id))
       }
     }
   }
