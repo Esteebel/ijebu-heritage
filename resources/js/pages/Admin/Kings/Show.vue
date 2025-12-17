@@ -33,12 +33,39 @@
               <h5 class="card-title mb-0">King Information</h5>
             </div>
             <div class="card-body">
+              <div class="row mb-4">
+                <div class="col-12">
+                  <div class="bg-light rounded d-flex align-items-center justify-content-center overflow-hidden mx-auto" style="height: 300px; max-width: 300px;">
+                    <img
+                      v-if="king.portraitMedia"
+                      :src="'/storage/' + king.portraitMedia.path"
+                      class="img-fluid w-100 h-100 object-fit-cover"
+                      :alt="king.name"
+                      style="object-fit: cover;"
+                    >
+                    <div v-else class="text-center p-4">
+                      <i class="bi bi-person-circle text-muted" style="font-size: 6rem;"></i>
+                      <p class="text-muted mt-3 mb-0">No Image Available</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="row mb-3">
                 <div class="col-sm-3">
                   <strong>Name</strong>
                 </div>
                 <div class="col-sm-9">
                   {{ king.name }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Regnal Name</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ king.regnal_name || 'Not specified' }}
                 </div>
               </div>
 
@@ -53,10 +80,28 @@
 
               <div class="row mb-3">
                 <div class="col-sm-3">
+                  <strong>Birth Year</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ king.birth_year || 'Not specified' }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Death Year</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ king.death_year || 'Not specified' }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
                   <strong>Reign Start Date</strong>
                 </div>
                 <div class="col-sm-9">
-                  {{ king.reign_start_date || 'Not specified' }}
+                  {{ formatDate(king.reign_start_date) }}
                 </div>
               </div>
 
@@ -65,16 +110,25 @@
                   <strong>Reign End Date</strong>
                 </div>
                 <div class="col-sm-9">
-                  {{ king.reign_end_date || 'Not specified' }}
+                  {{ formatDate(king.reign_end_date) }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Short Biography</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ king.short_bio || 'Not provided' }}
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-sm-3">
-                  <strong>Biography</strong>
+                  <strong>Full Biography</strong>
                 </div>
                 <div class="col-sm-9">
-                  {{ king.biography || 'Not provided' }}
+                  {{ king.full_bio || 'Not provided' }}
                 </div>
               </div>
             </div>
@@ -82,7 +136,7 @@
         </div>
 
         <div class="col-lg-4">
-          <div class="card shadow-sm">
+          <div class="card shadow-sm mb-4">
             <div class="card-header bg-white border-bottom">
               <h5 class="card-title mb-0">Publishing Status</h5>
             </div>
@@ -101,12 +155,36 @@
 
               <div class="mb-3">
                 <label class="form-label">Last Updated</label>
-                <input type="text" class="form-control" value="Dec 12, 2023" readonly>
+                <input type="text" class="form-control" :value="formatDate(king.updated_at)" readonly>
               </div>
 
               <div class="mb-0">
                 <label class="form-label">Created By</label>
                 <input type="text" class="form-control" value="Editor John" readonly>
+              </div>
+            </div>
+          </div>
+
+          <div class="card shadow-sm" v-if="king.media && king.media.length > 0">
+            <div class="card-header bg-white border-bottom">
+              <h5 class="card-title mb-0">Gallery Images</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-2">
+                <div
+                  v-for="image in king.media"
+                  :key="image.id"
+                  class="col-6"
+                >
+                  <div class="rounded overflow-hidden">
+                    <img
+                      :src="'/storage/' + image.path"
+                      class="img-fluid"
+                      :alt="image.caption || 'Gallery image'"
+                      style="aspect-ratio: 1/1; object-fit: cover;"
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -134,6 +212,10 @@ export default {
     }
   },
   methods: {
+    formatDate(dateString) {
+      if (!dateString) return 'Not specified';
+      return new Date(dateString).toLocaleDateString();
+    },
     async destroy() {
       const result = await this.$swal.fire({
         title: 'Are you sure?',
@@ -164,5 +246,9 @@ export default {
 
 .row:last-child {
   margin-bottom: 0;
+}
+
+.object-fit-cover {
+  object-fit: cover;
 }
 </style>

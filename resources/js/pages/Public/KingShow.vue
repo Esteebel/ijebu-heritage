@@ -25,10 +25,19 @@
                         <div class="card-body p-4 p-md-5">
                             <div class="row">
                                 <div class="col-12 col-md-4 mb-4 mb-md-0">
-                                    <div class="bg-secondary rounded-lg d-flex align-items-center justify-content-center"
+                                    <div class="bg-light rounded-lg d-flex align-items-center justify-content-center overflow-hidden"
                                         style="height: 300px;">
-                                        <span v-if="king.portraitMedia" class="text-light">Portrait Image</span>
-                                        <span v-else class="text-light">No Image Available</span>
+                                        <img
+                                          v-if="king.portraitMedia"
+                                          :src="'/storage/' + king.portraitMedia.path"
+                                          class="img-fluid w-100 h-100 object-fit-cover"
+                                          :alt="king.name"
+                                          style="object-fit: cover;"
+                                        >
+                                        <div v-else class="text-center p-4">
+                                          <i class="bi bi-person-circle text-muted" style="font-size: 6rem;"></i>
+                                          <p class="text-muted mt-3 mb-0">No Image Available</p>
+                                        </div>
                                     </div>
 
                                     <div class="mt-4">
@@ -138,5 +147,9 @@ export default {
 .prose p {
     margin-bottom: 1rem;
     line-height: 1.7;
+}
+
+.object-fit-cover {
+  object-fit: cover;
 }
 </style>

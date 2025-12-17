@@ -82,7 +82,7 @@
                                                 <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
                                                     style="height: 200px;">
                                                     <template v-if="king.portraitMedia && king.portraitMedia.path">
-                                                        <img :src="'/storage/' + king.portraitMedia.path"
+                                                        <img :src="encodeURI('/storage/' + king.portraitMedia.path)"
                                                              :alt="king.name"
                                                              class="w-100 h-100 object-fit-cover">
                                                     </template>
@@ -133,41 +133,36 @@
                                 </div>
 
                                 <div class="row g-3">
-                                    <!-- Gallery Item 1 -->
-                                    <div class="col-6 col-md-4 col-lg-3">
-                                        <div class="gallery-item rounded overflow-hidden shadow-sm hover-lift">
-                                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                                                class="w-100" style="height: 200px; object-fit: cover;"
-                                                alt="Gallery Item">
+                                    <!-- Gallery Items from Database -->
+                                    <template v-if="galleryItems && galleryItems.length > 0">
+                                        <div v-for="(item, index) in galleryItems" :key="item.id"
+                                            class="col-6 col-md-4 col-lg-3">
+                                            <div class="gallery-item rounded overflow-hidden shadow-sm hover-lift">
+                                                <template v-if="item.media && item.media.path">
+                                                    <img :src="encodeURI('/storage/' + item.media.path)"
+                                                        class="w-100" style="height: 200px; object-fit: cover;"
+                                                        :alt="item.title || 'Gallery Item'">
+                                                </template>
+                                                <template v-else>
+                                                    <div class="bg-secondary w-100 d-flex align-items-center justify-content-center"
+                                                        style="height: 200px;">
+                                                        <span class="text-light">No Image</span>
+                                                    </div>
+                                                </template>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <!-- Gallery Item 2 -->
-                                    <div class="col-6 col-md-4 col-lg-3">
-                                        <div class="gallery-item rounded overflow-hidden shadow-sm hover-lift">
-                                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                                                class="w-100" style="height: 200px; object-fit: cover;"
-                                                alt="Gallery Item">
+                                    </template>
+                                    <template v-else>
+                                        <!-- Fallback gallery items -->
+                                        <div v-for="index in 8" :key="index" class="col-6 col-md-4 col-lg-3">
+                                            <div class="gallery-item rounded overflow-hidden shadow-sm hover-lift">
+                                                <div class="bg-secondary w-100 d-flex align-items-center justify-content-center"
+                                                    style="height: 200px;">
+                                                    <span class="text-light">Gallery Item {{ index }}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <!-- Gallery Item 3 -->
-                                    <div class="col-6 col-md-4 col-lg-3">
-                                        <div class="gallery-item rounded overflow-hidden shadow-sm hover-lift">
-                                            <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                                                class="w-100" style="height: 200px; object-fit: cover;"
-                                                alt="Gallery Item">
-                                        </div>
-                                    </div>
-
-                                    <!-- Gallery Item 4 -->
-                                    <div class="col-6 col-md-4 col-lg-3">
-                                        <div class="gallery-item rounded overflow-hidden shadow-sm hover-lift">
-                                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                                                class="w-100" style="height: 200px; object-fit: cover;"
-                                                alt="Gallery Item">
-                                        </div>
-                                    </div>
+                                    </template>
                                 </div>
                             </section>
 
@@ -185,68 +180,58 @@
                                 </div>
 
                                 <div class="row g-4">
-                                    <!-- Past King 1 -->
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="card h-100 border-0 shadow-sm hover-lift">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3"
-                                                        style="width: 60px; height: 60px;">
-                                                        <span class="text-white fw-bold">RK</span>
-                                                    </div>
-                                                    <div>
-                                                        <h3 class="h5 fw-bold text-dark mb-0">King Richard III</h3>
-                                                        <p class="text-muted mb-0">1483-1485</p>
-                                                    </div>
+                                    <!-- Past Kings from Database -->
+                                    <template v-if="allKings && allKings.length > 0">
+                                        <div v-for="(king, index) in allKings" :key="king.id"
+                                            class="col-12 col-md-6 col-lg-4">
+                                            <div class="card h-100 border-0 shadow-sm hover-lift">
+                                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden"
+                                                    style="height: 200px;">
+                                                    <template v-if="king.portraitMedia && king.portraitMedia.path">
+                                                        <img :src="encodeURI('/storage/' + king.portraitMedia.path)"
+                                                                :alt="king.name"
+                                                                class="w-100 h-100 object-fit-cover">
+                                                    </template>
+                                                    <template v-else>
+                                                        <div class="text-center p-4">
+                                                            <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
+                                                            <p class="text-muted mt-2 mb-0">No Image Available</p>
+                                                        </div>
+                                                    </template>
                                                 </div>
-                                                <p class="text-muted">The last king of the House of York and the last of
-                                                    the Plantagenet dynasty.</p>
-                                                <a href="/kings" class="btn btn-outline-primary btn-sm">Read More</a>
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                                        <h3 class="h5 fw-bold text-dark mb-0">{{ king.name }}</h3>
+                                                        <span class="badge bg-primary-subtle text-primary">{{ king.dynasty ? king.dynasty.name : 'Unknown Dynasty' }}</span>
+                                                    </div>
+                                                    <p class="text-muted">{{ king.short_bio || 'No biography available.' }}</p>
+                                                    <a :href="route('kings.show', king.id)" class="btn btn-outline-primary btn-sm">Read More</a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <!-- Past King 2 -->
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="card h-100 border-0 shadow-sm hover-lift">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3"
-                                                        style="width: 60px; height: 60px;">
-                                                        <span class="text-white fw-bold">EK</span>
-                                                    </div>
-                                                    <div>
-                                                        <h3 class="h5 fw-bold text-dark mb-0">King Edward IV</h3>
-                                                        <p class="text-muted mb-0">1461-1483</p>
+                                    </template>
+                                    <template v-else>
+                                        <!-- Fallback content -->
+                                        <div v-for="index in 3" :key="index" class="col-12 col-md-6 col-lg-4">
+                                            <div class="card h-100 border-0 shadow-sm hover-lift">
+                                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden"
+                                                    style="height: 200px;">
+                                                    <div class="text-center p-4">
+                                                        <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
+                                                        <p class="text-muted mt-2 mb-0">No Image Available</p>
                                                     </div>
                                                 </div>
-                                                <p class="text-muted">Founder of the House of York who ruled during the
-                                                    Wars of the Roses.</p>
-                                                <a href="/kings" class="btn btn-outline-primary btn-sm">Read More</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Past King 3 -->
-                                    <div class="col-12 col-md-6 col-lg-4">
-                                        <div class="card h-100 border-0 shadow-sm hover-lift">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center me-3"
-                                                        style="width: 60px; height: 60px;">
-                                                        <span class="text-white fw-bold">HK</span>
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                                        <h3 class="h5 fw-bold text-dark mb-0">Past King {{ index }}</h3>
+                                                        <span class="badge bg-primary-subtle text-primary">Unknown Dynasty</span>
                                                     </div>
-                                                    <div>
-                                                        <h3 class="h5 fw-bold text-dark mb-0">King Henry VI</h3>
-                                                        <p class="text-muted mb-0">1422-1461, 1470-1471</p>
-                                                    </div>
+                                                    <p class="text-muted">Biography not available at the moment.</p>
+                                                    <a href="/kings" class="btn btn-outline-primary btn-sm">Read More</a>
                                                 </div>
-                                                <p class="text-muted">Known for his mental illness and piety, he founded
-                                                    Eton College and King's College, Cambridge.</p>
-                                                <a href="/kings" class="btn btn-outline-primary btn-sm">Read More</a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </template>
                                 </div>
                             </section>
 
@@ -264,42 +249,31 @@
                                 </div>
 
                                 <div class="row g-4">
-                                    <!-- Event Card 1 -->
-                                    <div class="col-12 col-lg-6">
-                                        <div class="card border-start border-4 border-primary shadow-sm h-100">
-                                            <div class="card-body">
-                                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                                    <h3 class="h4 fw-bold text-dark mb-0">Royal History Conference</h3>
-                                                    <span class="text-muted small">May 15-17, 2026</span>
-                                                </div>
-                                                <p class="text-muted mb-4">Join us for our annual conference celebrating
-                                                    royal history with guest speakers and exhibitions.</p>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <span class="text-muted small">Main Hall, Kingdom Museum</span>
-                                                    <a href="/events" class="btn btn-outline-primary btn-sm">Learn More</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Event Card 2 -->
-                                    <div class="col-12 col-lg-6">
-                                        <div class="card border-start border-4 border-success shadow-sm h-100">
-                                            <div class="card-body">
-                                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                                    <h3 class="h4 fw-bold text-dark mb-0">Tudor Dynasty Special
-                                                        Exhibition</h3>
-                                                    <span class="text-muted small">July 1 - Sept 30, 2026</span>
-                                                </div>
-                                                <p class="text-muted mb-4">A special exhibition showcasing artifacts and
-                                                    stories from the Tudor Dynasty.</p>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <span class="text-muted small">Gallery 3, Kingdom Museum</span>
-                                                    <a href="/events" class="btn btn-outline-primary btn-sm">Learn More</a>
+                                    <!-- Events from Database -->
+                                    <template v-if="upcomingEvents && upcomingEvents.length > 0">
+                                        <div v-for="(event, index) in upcomingEvents" :key="event.id"
+                                            class="col-12 col-lg-6">
+                                            <div class="card border-start border-4 border-primary shadow-sm h-100">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                                        <h3 class="h4 fw-bold text-dark mb-0">{{ event.title }}</h3>
+                                                        <span class="text-muted small">{{ formatDateRange(event.start_datetime, event.end_datetime) }}</span>
+                                                    </div>
+                                                    <p class="text-muted mb-4">{{ event.description || 'No description available.' }}</p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="text-muted small">{{ event.location || 'Location TBD' }}</span>
+                                                        <a :href="route('events.show', event.id)" class="btn btn-outline-primary btn-sm">Learn More</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </template>
+                                    <template v-else>
+                                        <!-- Fallback content -->
+                                        <div class="col-12">
+                                            <p class="text-muted text-center">No upcoming events scheduled at this time.</p>
+                                        </div>
+                                    </template>
                                 </div>
                             </section>
 
@@ -346,6 +320,18 @@ export default {
             type: Array,
             default: () => []
         },
+        galleryItems: {
+            type: Array,
+            default: () => []
+        },
+        allKings: {
+            type: Array,
+            default: () => []
+        },
+        upcomingEvents: {
+            type: Array,
+            default: () => []
+        },
     },
     components: {
         AppLayout,
@@ -355,14 +341,25 @@ export default {
             currentSlide: 0,
             slides: [
                 {
-                    image: '/storage/media/images/Ijebu-doubled-face.jpeg'
+                    image: '/storage/media/images/farouq-hourse-ojudeoba.jpeg'
                 },
                 {
                     image: '/storage/media/images/Oba-Sikiru-Kayode-Adetona..jpeg'
                 },
                 {
-                    image: '/storage/media/images/Awujale-crown-mod.png'
-                }
+                    image: '/storage/media/images/Culture-Colour-and-Heritage-on-display-at-OjudeOba2025.-1.jpg'
+                },
+                   {
+                    image: '/storage/media/images/men-ojudeoba25.jpg'
+                },
+                   {
+                    image: '/storage/media/images/regberegb-ojudeoba25.png'
+                },
+                  {
+                    image: '/storage/media/images/Farouq-Oreagba-ojudeoba25.jpg'
+                },
+
+
             ]
         }
     },
@@ -390,6 +387,9 @@ export default {
             if (name === 'kings.show' && params) {
                 return `/kings/${params}`;
             }
+            if (name === 'events.show' && params) {
+                return `/events/${params}`;
+            }
             return '#';
         },
         getDisplayedKings(kings, limit) {
@@ -405,6 +405,43 @@ export default {
                 displayedKings.push(kings[kingIndex]);
             }
             return displayedKings;
+        },
+        getInitials(name) {
+            if (!name) return 'PK';
+            const names = name.split(' ');
+            let initials = names[0].charAt(0);
+            if (names.length > 1) {
+                initials += names[names.length - 1].charAt(0);
+            }
+            return initials.toUpperCase();
+        },
+        getReignPeriod(king) {
+            if (king.reign_start_date && king.reign_end_date) {
+                const startYear = new Date(king.reign_start_date).getFullYear();
+                const endYear = new Date(king.reign_end_date).getFullYear();
+                return `${startYear}-${endYear}`;
+            }
+            return 'Unknown Period';
+        },
+        formatDateRange(start, end) {
+            if (!start || !end) return 'Date TBD';
+
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+
+            const startFormatted = startDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+
+            const endFormatted = endDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+            });
+
+            return `${startFormatted} - ${endFormatted}`;
         }
     }
 }
@@ -438,11 +475,11 @@ export default {
 
 /* Overlay for better text visibility */
 .hero-overlay {
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2));
 }
 
 /* Content Styles */
-s .hero-content {
+.hero-content {
     backdrop-filter: blur(2px);
 }
 

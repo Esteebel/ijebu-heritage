@@ -20,6 +20,12 @@ use App\Http\Controllers\TourController;
 |
 */
 
+// Test route for debugging
+Route::get('/test-kings', function () {
+    $kings = \App\Models\King::with('portraitMedia')->get();
+    return response()->json($kings);
+});
+
 // Authentication Routes...
 Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
@@ -99,30 +105,49 @@ Route::middleware(['auth', 'admin.editor'])->prefix('admin')->group(function () 
         'update' => 'admin.dynasties.update',
         'destroy' => 'admin.dynasties.destroy',
     ]);
+    Route::resource('tickets', App\Http\Controllers\Admin\TicketController::class)->names([
+        'index' => 'admin.tickets.index',
+        'create' => 'admin.tickets.create',
+        'store' => 'admin.tickets.store',
+        'show' => 'admin.tickets.show',
+        'edit' => 'admin.tickets.edit',
+        'update' => 'admin.tickets.update',
+        'destroy' => 'admin.tickets.destroy',
+    ]);
+    Route::resource('tours', App\Http\Controllers\Admin\TourController::class)->names([
+        'index' => 'admin.tours.index',
+        'create' => 'admin.tours.create',
+        'store' => 'admin.tours.store',
+        'show' => 'admin.tours.show',
+        'edit' => 'admin.tours.edit',
+        'update' => 'admin.tours.update',
+        'destroy' => 'admin.tours.destroy',
+    ]);
+    Route::resource('bookings', App\Http\Controllers\Admin\BookingController::class)->names([
+        'index' => 'admin.bookings.index',
+        'create' => 'admin.bookings.create',
+        'store' => 'admin.bookings.store',
+        'show' => 'admin.bookings.show',
+        'edit' => 'admin.bookings.edit',
+        'update' => 'admin.bookings.update',
+        'destroy' => 'admin.bookings.destroy',
+    ]);
+    Route::resource('publishing/queue', App\Http\Controllers\Admin\PublishingQueueController::class)->names([
+        'index' => 'admin.publishing.queue.index',
+        'create' => 'admin.publishing.queue.create',
+        'store' => 'admin.publishing.queue.store',
+        'show' => 'admin.publishing.queue.show',
+        'edit' => 'admin.publishing.queue.edit',
+        'update' => 'admin.publishing.queue.update',
+        'destroy' => 'admin.publishing.queue.destroy',
+    ]);
+    Route::post('publishing/queue/{publishingQueue}/publish', [App\Http\Controllers\Admin\PublishingQueueController::class, 'publish'])->name('admin.publishing.queue.publish');
     Route::post('media/bulk-upload', [App\Http\Controllers\Admin\MediaController::class, 'bulkUpload']);
-
-    // Publishing queue route
-    Route::get('/publishing/queue', function () {
-        return inertia('Admin/Publishing/Queue');
-    })->name('publishing.queue');
 
     // Settings route
     Route::get('/settings', function () {
         return inertia('Admin/Settings/Index');
     })->name('settings.index');
-
-    // Tours, tickets, bookings routes
-    Route::get('/tours', function () {
-        return inertia('Admin/Tours/Index');
-    })->name('tours.index');
-
-    Route::get('/tickets', function () {
-        return inertia('Admin/Tickets/Index');
-    })->name('admin.tickets.index');
-
-    Route::get('/bookings', function () {
-        return inertia('Admin/Bookings/Index');
-    })->name('bookings.index');
 
     // Timeline route
     Route::get('/timeline', function () {

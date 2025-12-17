@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0">Media Library</h1>
         <inertia-link
-          :href="$route('media.create')"
+          :href="$route('admin.media.create')"
           class="btn btn-primary"
         >
           <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,7 +55,7 @@
                   <small class="text-muted mb-2">{{ medium.mime_type }}</small>
                   <div class="mt-auto d-flex justify-content-between">
                     <inertia-link
-                      :href="$route('media.edit', medium.id)"
+                      :href="$route('admin.media.edit', medium.id)"
                       class="btn btn-sm btn-outline-primary"
                     >
                       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,7 +114,7 @@ export default {
   methods: {
     destroy(id) {
       if (confirm('Are you sure you want to delete this media item?')) {
-        this.$inertia.delete(this.$route('media.destroy', id))
+        this.$inertia.delete(this.$route('admin.media.destroy', id))
       }
     }
   }

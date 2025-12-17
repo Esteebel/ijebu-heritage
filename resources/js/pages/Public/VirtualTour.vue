@@ -40,47 +40,37 @@
                     </div>
 
                     <div class="row g-4 mb-5">
-                        <div class="col-12 col-md-4">
+                        <div v-for="(tour, index) in tours" :key="tour.id" class="col-12 col-md-4">
                             <div class="card h-100 border-0 shadow-sm hover-lift">
                                 <div class="card-body text-center">
-                                    <div class="icon-circle bg-primary bg-opacity-10 text-primary mx-auto mb-3">
-                                        <i class="bi bi-building display-5"></i>
+                                    <div class="icon-circle"
+                                         :class="{
+                                             'bg-primary bg-opacity-10 text-primary': tour.type === 'virtual',
+                                             'bg-success bg-opacity-10 text-success': tour.type === 'guided',
+                                             'bg-warning bg-opacity-10 text-warning': tour.type === 'self-guided'
+                                         }"
+                                         mx-auto mb-3>
+                                        <i class="bi"
+                                           :class="{
+                                               'bi-camera-video': tour.type === 'virtual',
+                                               'bi-person-badge': tour.type === 'guided',
+                                               'bi-map': tour.type === 'self-guided'
+                                           }"
+                                           display-5></i>
                                     </div>
-                                    <h3 class="h5 fw-bold text-dark mb-3">Main Gallery</h3>
+                                    <h3 class="h5 fw-bold text-dark mb-3">{{ tour.name }}</h3>
                                     <p class="text-muted">
-                                        Explore our extensive collection of royal artifacts and historical items.
+                                        {{ tour.description }}
                                     </p>
-                                    <a href="#" class="btn btn-outline-primary">Explore Gallery</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-4">
-                            <div class="card h-100 border-0 shadow-sm hover-lift">
-                                <div class="card-body text-center">
-                                    <div class="icon-circle bg-success bg-opacity-10 text-success mx-auto mb-3">
-                                        <i class="bi bi-clock-history display-5"></i>
-                                    </div>
-                                    <h3 class="h5 fw-bold text-dark mb-3">Historical Timeline</h3>
-                                    <p class="text-muted">
-                                        Journey through centuries of royal history with our interactive exhibits.
-                                    </p>
-                                    <a href="/timeline" class="btn btn-outline-primary">View Timeline</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-4">
-                            <div class="card h-100 border-0 shadow-sm hover-lift">
-                                <div class="card-body text-center">
-                                    <div class="icon-circle bg-warning bg-opacity-10 text-warning mx-auto mb-3">
-                                        <i class="bi bi-star display-5"></i>
-                                    </div>
-                                    <h3 class="h5 fw-bold text-dark mb-3">Special Exhibits</h3>
-                                    <p class="text-muted">
-                                        Discover our rotating special exhibitions featuring rare artifacts.
-                                    </p>
-                                    <a href="/exhibits" class="btn btn-outline-primary">View Exhibits</a>
+                                    <ul class="list-unstyled text-start mb-4">
+                                        <li v-for="(feature, fIndex) in tour.features" :key="fIndex" class="mb-1">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>{{ feature }}
+                                        </li>
+                                    </ul>
+                                    <a :href="tour.url || '#'" class="btn btn-outline-primary"
+                                       :target="tour.url ? '_blank' : '_self'">
+                                        {{ tour.type === 'virtual' ? 'Start Tour' : 'Learn More' }}
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -114,9 +104,15 @@ import AppLayout from '../../layouts/AppLayout.vue'
 
 export default {
     name: 'VirtualTour',
+    props: {
+        tours: {
+            type: Array,
+            default: () => []
+        }
+    },
     components: {
         AppLayout,
-    },
+    }
 }
 </script>
 
