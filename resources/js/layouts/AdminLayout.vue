@@ -143,7 +143,7 @@
 
             <li class="nav-item mb-1">
               <inertia-link
-                :href="$route('bookings.index')"
+                :href="$route('admin.bookings.index')"
                 class="nav-link text-white d-flex align-items-center"
                 :class="{ 'active': $page.url.startsWith('/admin/bookings') }"
               >
@@ -157,7 +157,7 @@
             <!-- Virtual Tours -->
             <li class="nav-item mb-1">
               <inertia-link
-                :href="$route('tours.index')"
+                :href="$route('admin.tours.index')"
                 class="nav-link text-white d-flex align-items-center"
                 :class="{ 'active': $page.url.startsWith('/admin/tours') }"
               >
@@ -171,7 +171,7 @@
             <!-- Publishing Queue -->
             <li class="nav-item mb-1">
               <inertia-link
-                :href="$route('publishing.queue')"
+                :href="$route('admin.publishing.queue.index')"
                 class="nav-link text-white d-flex align-items-center"
                 :class="{ 'active': $page.url.startsWith('/admin/publishing') }"
               >

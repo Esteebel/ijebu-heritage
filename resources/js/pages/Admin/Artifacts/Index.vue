@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0">Gallery Management</h1>
         <inertia-link
-          :href="$route('artifacts.create')"
+          :href="$route('admin.artifacts.create')"
           class="btn btn-primary"
         >
           <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,7 +56,7 @@
                 <td>
                   <div class="btn-group btn-group-sm">
                     <inertia-link
-                      :href="$route('artifacts.edit', artifact.id)"
+                      :href="$route('admin.artifacts.edit', artifact.id)"
                       class="btn btn-outline-secondary"
                     >
                       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,7 +115,7 @@ export default {
   methods: {
     destroy(id) {
       if (confirm('Are you sure you want to delete this artifact?')) {
-        this.$inertia.delete(this.$route('artifacts.destroy', id))
+        this.$inertia.delete(this.$route('admin.artifacts.destroy', id))
       }
     }
   }

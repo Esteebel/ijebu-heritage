@@ -171,15 +171,4 @@ export default {
 .form-label {
   font-weight: 500;
 }
-</style>}
-</script>
-
-<style scoped>
-.card-title {
-  font-size: 1.1rem;
-}
-
-.form-label {
-  font-weight: 500;
-}
 </style>

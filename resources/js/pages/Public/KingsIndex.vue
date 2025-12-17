@@ -16,9 +16,18 @@
               class="col-12 col-md-6 col-lg-4 animate__animated animate__fadeInUp"
             >
               <div class="card h-100 border-0 shadow-sm hover-lift">
-                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
-                  <span v-if="king.portraitMedia" class="text-light">Portrait Image</span>
-                  <span v-else class="text-light">No Image Available</span>
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden" style="height: 200px;">
+                  <img
+                    v-if="king.portraitMedia"
+                    :src="'/storage/' + king.portraitMedia.path"
+                    class="img-fluid w-100 h-100 object-fit-cover"
+                    :alt="king.name"
+                    style="object-fit: cover;"
+                  >
+                  <div v-else class="text-center p-4">
+                    <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
+                    <p class="text-muted mt-2 mb-0">No Image Available</p>
+                  </div>
                 </div>
                 <div class="card-body d-flex flex-column">
                   <div class="d-flex justify-content-between align-items-start mb-3">
@@ -91,5 +100,9 @@ export default {
 
 .animate__fadeInUp {
   animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.object-fit-cover {
+  object-fit: cover;
 }
 </style>

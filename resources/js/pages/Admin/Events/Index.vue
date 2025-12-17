@@ -2,28 +2,26 @@
   <admin-layout>
     <div class="container-fluid py-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3 mb-0">Manage Kings</h1>
+        <h1 class="h3 mb-0">Manage Events</h1>
         <inertia-link
-          :href="$route('admin.kings.create')"
+          :href="$route('admin.events.create')"
           class="btn btn-primary"
         >
           <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
           </svg>
-          Add King
+          Add Event
         </inertia-link>
       </div>
 
       <div class="card shadow-sm">
         <div class="card-header bg-white border-bottom">
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">Kings List</h5>
+            <h5 class="card-title mb-0">Events List</h5>
             <div class="d-flex">
-              <input type="text" class="form-control form-control-sm me-2" placeholder="Search kings...">
+              <input type="text" class="form-control form-control-sm me-2" placeholder="Search events...">
               <select class="form-select form-select-sm">
-                <option>All Dynasties</option>
-                <option>Oduduwa Dynasty</option>
-                <option>Ijebu Dynasty</option>
+                <option>All Events</option>
               </select>
             </div>
           </div>
@@ -32,48 +30,37 @@
           <table class="table table-hover mb-0">
             <thead class="table-light">
               <tr>
-                <th>King</th>
-                <th>Dynasty</th>
-                <th>Reign Period</th>
+                <th>Event</th>
+                <th>Date & Time</th>
+                <th>Location</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="king in kings" :key="king.id">
+              <tr v-for="event in events" :key="event.id">
                 <td>
                   <div class="d-flex align-items-center">
-                    <div class="me-3" style="width: 40px; height: 40px;">
-                      <img
-                        v-if="king.portraitMedia"
-                        :src="'/storage/' + king.portraitMedia.path"
-                        class="img-fluid rounded-circle"
-                        :alt="king.name"
-                        style="width: 40px; height: 40px; object-fit: cover;"
-                      >
-                      <div
-                        v-else
-                        class="bg-light rounded-circle d-flex align-items-center justify-content-center"
-                        style="width: 40px; height: 40px;"
-                      >
-                        <span class="fw-bold text-muted">{{ king.name.charAt(0) }}</span>
-                      </div>
+                    <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                      <span class="fw-bold">{{ event.title.charAt(0) }}</span>
                     </div>
                     <div>
-                      <strong>{{ king.name }}</strong>
-                      <div class="small text-muted">ID: {{ king.id }}</div>
+                      <strong>{{ event.title }}</strong>
+                      <div class="small text-muted">ID: {{ event.id }}</div>
                     </div>
                   </div>
                 </td>
-                <td>{{ king.dynasty ? king.dynasty.name : 'Unknown Dynasty' }}</td>
-                <td>{{ formatDate(king.reign_start_date) }} - {{ formatDate(king.reign_end_date) }}</td>
+                <td>
+                  {{ formatDate(event.start_datetime) }} - {{ formatDate(event.end_datetime) }}
+                </td>
+                <td>{{ event.location }}</td>
                 <td>
                   <span class="badge bg-success">Published</span>
                 </td>
                 <td>
                   <div class="btn-group btn-group-sm">
                     <inertia-link
-                      :href="$route('admin.kings.show', king.id)"
+                      :href="$route('admin.events.show', event.id)"
                       class="btn btn-outline-primary"
                     >
                       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +69,7 @@
                       </svg>
                     </inertia-link>
                     <inertia-link
-                      :href="$route('admin.kings.edit', king.id)"
+                      :href="$route('admin.events.edit', event.id)"
                       class="btn btn-outline-secondary"
                     >
                       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,7 +78,7 @@
                     </inertia-link>
                     <button
                       v-if="isAdmin"
-                      @click="destroy(king.id)"
+                      @click="destroy(event.id)"
                       class="btn btn-outline-danger"
                     >
                       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,7 +94,7 @@
         <div class="card-footer bg-white border-top">
           <div class="d-flex justify-content-between align-items-center">
             <div class="text-muted small">
-              Showing {{ kings.length }} of {{ kings.length }} kings
+              Showing {{ events.length }} of {{ events.length }} events
             </div>
             <nav>
               <ul class="pagination pagination-sm mb-0">
@@ -137,7 +124,7 @@ export default {
     AdminLayout,
   },
   props: {
-    kings: Array,
+    events: Array,
   },
   computed: {
     isAdmin() {
@@ -148,8 +135,8 @@ export default {
   },
   methods: {
     formatDate(dateString) {
-      if (!dateString) return 'N/A';
-      return new Date(dateString).toLocaleDateString();
+      const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
     },
     async destroy(id) {
       const result = await this.$swal.fire({
@@ -163,7 +150,7 @@ export default {
       });
 
       if (result.isConfirmed) {
-        this.$inertia.delete(this.$route('admin.kings.destroy', id));
+        this.$inertia.delete(this.$route('admin.events.destroy', id));
       }
     }
   }

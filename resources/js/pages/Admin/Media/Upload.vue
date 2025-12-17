@@ -49,7 +49,7 @@
                 <div class="mt-8 border-t border-gray-200 pt-5">
                   <div class="flex justify-end">
                     <inertia-link
-                      :href="$route('media.index')"
+                      :href="$route('admin.media.index')"
                       class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                       Cancel
@@ -104,7 +104,7 @@ export default {
         formData.append('name', this.form.name)
       }
 
-      this.form.post(this.$route('media.store'), {
+      this.form.post(this.$route('admin.media.store'), {
         data: formData,
         headers: {
           'Content-Type': 'multipart/form-data',

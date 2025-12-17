@@ -6,13 +6,13 @@
           <h1 class="text-2xl font-semibold text-gray-900">Media Details</h1>
           <div class="flex space-x-2">
             <inertia-link
-              :href="$route('media.edit', medium.id)"
+              :href="$route('admin.media.edit', medium.id)"
               class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Edit
             </inertia-link>
             <inertia-link
-              :href="$route('media.index')"
+              :href="$route('admin.media.index')"
               class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Back
