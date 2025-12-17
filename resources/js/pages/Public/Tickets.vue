@@ -28,38 +28,22 @@
                             <h2 class="h3 fw-bold text-dark mb-4">Ticket Options</h2>
 
                             <div class="row g-4 mb-5">
-                                <div class="col-12 col-md-6">
-                                    <div class="card h-100 border-primary border-2">
+                                <div v-for="(ticket, index) in tickets" :key="ticket.id" class="col-12 col-md-6">
+                                    <div class="card h-100" :class="{ 'border-primary border-2': ticket.type === 'general' }">
                                         <div class="card-body">
-                                            <h3 class="h4 fw-bold text-primary">General Admission</h3>
+                                            <h3 class="h4 fw-bold" :class="{ 'text-primary': ticket.type === 'general', 'text-dark': ticket.type !== 'general' }">{{ ticket.name }}</h3>
                                             <div class="price-display mb-3">
-                                                <span class="display-5 fw-bold text-dark">$15</span>
-                                                <span class="text-muted">per adult</span>
+                                                <span class="display-5 fw-bold text-dark">${{ ticket.price }}</span>
+                                                <span class="text-muted" v-if="ticket.type === 'family'">up to 4 people</span>
+                                                <span class="text-muted" v-else>per person</span>
                                             </div>
+                                            <p class="text-muted mb-3">{{ ticket.description }}</p>
                                             <ul class="list-unstyled mb-4">
-                                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Access to all permanent exhibits</li>
-                                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Audio guide included</li>
-                                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Daily guided tours</li>
+                                                <li v-for="(benefit, bIndex) in ticket.benefits" :key="bIndex" class="mb-2">
+                                                    <i class="bi bi-check-circle-fill text-success me-2"></i>{{ benefit }}
+                                                </li>
                                             </ul>
-                                            <button class="btn btn-primary w-100">Select Tickets</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <h3 class="h4 fw-bold text-dark">Family Pass</h3>
-                                            <div class="price-display mb-3">
-                                                <span class="display-5 fw-bold text-dark">$45</span>
-                                                <span class="text-muted">up to 4 people</span>
-                                            </div>
-                                            <ul class="list-unstyled mb-4">
-                                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> All General Admission benefits</li>
-                                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Priority access to special exhibits</li>
-                                                <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Children under 12 free</li>
-                                            </ul>
-                                            <button class="btn btn-outline-primary w-100">Select Tickets</button>
+                                            <button class="btn" :class="{ 'btn-primary': ticket.type === 'general', 'btn-outline-primary': ticket.type !== 'general' }" w-100>Select Tickets</button>
                                         </div>
                                     </div>
                                 </div>
@@ -127,9 +111,15 @@ import AppLayout from '../../layouts/AppLayout.vue'
 
 export default {
     name: 'Tickets',
+    props: {
+        tickets: {
+            type: Array,
+            default: () => []
+        }
+    },
     components: {
         AppLayout,
-    },
+    }
 }
 </script>
 

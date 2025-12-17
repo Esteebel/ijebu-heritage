@@ -1,84 +1,180 @@
 <template>
-  <app-layout>
-    <div class="py-6">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <div class="flex justify-between items-center">
-          <h1 class="text-2xl font-semibold text-gray-900">Kings</h1>
-          <inertia-link
-            :href="route('admin.kings.create')"
-            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Add King
-          </inertia-link>
-        </div>
+  <admin-layout>
+    <div class="container-fluid py-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Manage Kings</h1>
+        <inertia-link
+          :href="$route('admin.kings.create')"
+          class="btn btn-primary"
+        >
+          <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          Add King
+        </inertia-link>
       </div>
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <div class="py-4">
-          <div class="bg-white shadow overflow-hidden sm:rounded-md">
-            <ul class="divide-y divide-gray-200">
-              <li v-for="king in kings" :key="king.id">
-                <inertia-link
-                  :href="route('admin.kings.show', king.id)"
-                  class="block hover:bg-gray-50"
-                >
-                  <div class="px-4 py-4 sm:px-6">
-                    <div class="flex items-center justify-between">
-                      <p class="text-sm font-medium text-indigo-600 truncate">
-                        {{ king.name }}
-                      </p>
-                      <div class="ml-2 flex-shrink-0 flex">
-                        <p
-                          v-if="king.featured"
-                          class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
-                        >
-                          Featured
-                        </p>
+
+      <div class="card shadow-sm">
+        <div class="card-header bg-white border-bottom">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Kings List</h5>
+            <div class="d-flex">
+              <input type="text" class="form-control form-control-sm me-2" placeholder="Search kings...">
+              <select class="form-select form-select-sm">
+                <option>All Dynasties</option>
+                <option>Oduduwa Dynasty</option>
+                <option>Ijebu Dynasty</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>King</th>
+                <th>Dynasty</th>
+                <th>Reign Period</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="king in kings" :key="king.id">
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="me-3" style="width: 40px; height: 40px;">
+                      <img
+                        v-if="king.portraitMedia"
+                        :src="'/storage/' + king.portraitMedia.path"
+                        class="img-fluid rounded-circle"
+                        :alt="king.name"
+                        style="width: 40px; height: 40px; object-fit: cover;"
+                      >
+                      <div
+                        v-else
+                        class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 40px; height: 40px;"
+                      >
+                        <span class="fw-bold text-muted">{{ king.name.charAt(0) }}</span>
                       </div>
                     </div>
-                    <div class="mt-2 sm:flex sm:justify-between">
-                      <div class="sm:flex">
-                        <p class="flex items-center text-sm text-gray-500">
-                          {{ king.regnal_name }}
-                        </p>
-                      </div>
-                      <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                        <p>
-                          Reign:
-                          {{
-                            king.reign_start_date
-                              ? new Date(king.reign_start_date).toLocaleDateString()
-                              : ''
-                          }}
-                          -
-                          {{
-                            king.reign_end_date
-                              ? new Date(king.reign_end_date).toLocaleDateString()
-                              : ''
-                          }}
-                        </p>
-                      </div>
+                    <div>
+                      <strong>{{ king.name }}</strong>
+                      <div class="small text-muted">ID: {{ king.id }}</div>
                     </div>
                   </div>
-                </inertia-link>
-              </li>
-            </ul>
+                </td>
+                <td>{{ king.dynasty ? king.dynasty.name : 'Unknown Dynasty' }}</td>
+                <td>{{ formatDate(king.reign_start_date) }} - {{ formatDate(king.reign_end_date) }}</td>
+                <td>
+                  <span class="badge bg-success">Published</span>
+                </td>
+                <td>
+                  <div class="btn-group btn-group-sm">
+                    <inertia-link
+                      :href="$route('admin.kings.show', king.id)"
+                      class="btn btn-outline-primary"
+                    >
+                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                      </svg>
+                    </inertia-link>
+                    <inertia-link
+                      :href="$route('admin.kings.edit', king.id)"
+                      class="btn btn-outline-secondary"
+                    >
+                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                      </svg>
+                    </inertia-link>
+                    <button
+                      v-if="isAdmin"
+                      @click="destroy(king.id)"
+                      class="btn btn-outline-danger"
+                    >
+                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer bg-white border-top">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="text-muted small">
+              Showing {{ kings.length }} of {{ kings.length }} kings
+            </div>
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item active">
+                  <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>
     </div>
-  </app-layout>
+  </admin-layout>
 </template>
 
 <script>
-import AppLayout from '../../../layouts/AppLayout.vue'
+import AdminLayout from '../../../layouts/AdminLayout.vue'
 
 export default {
-  name: 'AdminKingsIndex',
+  components: {
+    AdminLayout,
+  },
   props: {
     kings: Array,
   },
-  components: {
-    AppLayout,
+  computed: {
+    isAdmin() {
+      return this.$page.props.auth &&
+             this.$page.props.auth.user &&
+             this.$page.props.auth.user.role === 'admin';
+    }
   },
+  methods: {
+    formatDate(dateString) {
+      if (!dateString) return 'N/A';
+      return new Date(dateString).toLocaleDateString();
+    },
+    async destroy(id) {
+      const result = await this.$swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      });
+
+      if (result.isConfirmed) {
+        this.$inertia.delete(this.$route('admin.kings.destroy', id));
+      }
+    }
+  }
 }
 </script>
+
+<style scoped>
+.table th {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  letter-spacing: 0.5px;
+}
+</style>

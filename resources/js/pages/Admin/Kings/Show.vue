@@ -1,128 +1,254 @@
 <template>
-  <app-layout>
-    <div class="py-6">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <div class="flex justify-between items-center">
-          <h1 class="text-2xl font-semibold text-gray-900">{{ king.name }}</h1>
-          <div>
-            <inertia-link
-              :href="route('admin.kings.edit', king.id)"
-              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Edit
-            </inertia-link>
-            <button
-              @click="destroy"
-              class="ml-2 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-            >
-              Delete
-            </button>
-          </div>
+  <admin-layout>
+    <div class="container-fluid py-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">{{ king.name }}</h1>
+        <div>
+          <inertia-link
+            :href="$route('admin.kings.edit', king.id)"
+            class="btn btn-primary me-2"
+          >
+            <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+            Edit
+          </inertia-link>
+          <button
+            v-if="isAdmin"
+            @click="destroy"
+            class="btn btn-danger"
+          >
+            <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            Delete
+          </button>
         </div>
       </div>
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <div class="py-4">
-          <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div class="px-4 py-5 sm:px-6">
-              <h3 class="text-lg leading-6 font-medium text-gray-900">
-                King Information
-              </h3>
-              <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                Details about the king.
-              </p>
+
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card shadow-sm">
+            <div class="card-header bg-white border-bottom">
+              <h5 class="card-title mb-0">King Information</h5>
             </div>
-            <div class="border-t border-gray-200">
-              <dl>
-                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">Name</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{ king.name }}
-                  </dd>
+            <div class="card-body">
+              <div class="row mb-4">
+                <div class="col-12">
+                  <div class="bg-light rounded d-flex align-items-center justify-content-center overflow-hidden mx-auto" style="height: 300px; max-width: 300px;">
+                    <img
+                      v-if="king.portraitMedia"
+                      :src="'/storage/' + king.portraitMedia.path"
+                      class="img-fluid w-100 h-100 object-fit-cover"
+                      :alt="king.name"
+                      style="object-fit: cover;"
+                    >
+                    <div v-else class="text-center p-4">
+                      <i class="bi bi-person-circle text-muted" style="font-size: 6rem;"></i>
+                      <p class="text-muted mt-3 mb-0">No Image Available</p>
+                    </div>
+                  </div>
                 </div>
-                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">Regnal Name</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{ king.regnal_name }}
-                  </dd>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Name</strong>
                 </div>
-                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">Birth Year</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{ king.birth_year }}
-                  </dd>
+                <div class="col-sm-9">
+                  {{ king.name }}
                 </div>
-                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">Death Year</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{ king.death_year }}
-                  </dd>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Regnal Name</strong>
                 </div>
-                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">Reign Period</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{
-                      king.reign_start_date
-                        ? new Date(king.reign_start_date).toLocaleDateString()
-                        : ''
-                    }}
-                    -
-                    {{
-                      king.reign_end_date
-                        ? new Date(king.reign_end_date).toLocaleDateString()
-                        : ''
-                    }}
-                  </dd>
+                <div class="col-sm-9">
+                  {{ king.regnal_name || 'Not specified' }}
                 </div>
-                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">Dynasty</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{ king.dynasty?.name }}
-                  </dd>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Dynasty</strong>
                 </div>
-                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">Featured</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{ king.featured ? 'Yes' : 'No' }}
-                  </dd>
+                <div class="col-sm-9">
+                  {{ king.dynasty ? king.dynasty.name : 'Not specified' }}
                 </div>
-                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">Short Bio</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{ king.short_bio }}
-                  </dd>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Birth Year</strong>
                 </div>
-                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                  <dt class="text-sm font-medium text-gray-500">Full Bio</dt>
-                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {{ king.full_bio }}
-                  </dd>
+                <div class="col-sm-9">
+                  {{ king.birth_year || 'Not specified' }}
                 </div>
-              </dl>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Death Year</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ king.death_year || 'Not specified' }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Reign Start Date</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ formatDate(king.reign_start_date) }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Reign End Date</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ formatDate(king.reign_end_date) }}
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <strong>Short Biography</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ king.short_bio || 'Not provided' }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3">
+                  <strong>Full Biography</strong>
+                </div>
+                <div class="col-sm-9">
+                  {{ king.full_bio || 'Not provided' }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white border-bottom">
+              <h5 class="card-title mb-0">Publishing Status</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex align-items-center mb-3">
+                <div class="p-2 rounded-circle bg-success bg-opacity-10 me-3">
+                  <svg class="text-success" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h6 class="mb-0">Published</h6>
+                  <small class="text-muted">Visible to visitors</small>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Last Updated</label>
+                <input type="text" class="form-control" :value="formatDate(king.updated_at)" readonly>
+              </div>
+
+              <div class="mb-0">
+                <label class="form-label">Created By</label>
+                <input type="text" class="form-control" value="Editor John" readonly>
+              </div>
+            </div>
+          </div>
+
+          <div class="card shadow-sm" v-if="king.media && king.media.length > 0">
+            <div class="card-header bg-white border-bottom">
+              <h5 class="card-title mb-0">Gallery Images</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-2">
+                <div
+                  v-for="image in king.media"
+                  :key="image.id"
+                  class="col-6"
+                >
+                  <div class="rounded overflow-hidden">
+                    <img
+                      :src="'/storage/' + image.path"
+                      class="img-fluid"
+                      :alt="image.caption || 'Gallery image'"
+                      style="aspect-ratio: 1/1; object-fit: cover;"
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </app-layout>
+  </admin-layout>
 </template>
 
 <script>
-import AppLayout from '../../../layouts/AppLayout.vue'
+import AdminLayout from '../../../layouts/AdminLayout.vue'
 
 export default {
-  name: 'AdminKingsShow',
+  components: {
+    AdminLayout,
+  },
   props: {
     king: Object,
   },
-  components: {
-    AppLayout,
+  computed: {
+    isAdmin() {
+      return this.$page.props.auth &&
+             this.$page.props.auth.user &&
+             this.$page.props.auth.user.role === 'admin';
+    }
   },
   methods: {
-    destroy() {
-      if (confirm('Are you sure you want to delete this king?')) {
-        this.$inertia.delete(route('admin.kings.destroy', this.king.id))
-      }
+    formatDate(dateString) {
+      if (!dateString) return 'Not specified';
+      return new Date(dateString).toLocaleDateString();
     },
-  },
+    async destroy() {
+      const result = await this.$swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      });
+
+      if (result.isConfirmed) {
+        this.$inertia.delete(this.$route('admin.kings.destroy', this.king.id));
+      }
+    }
+  }
 }
 </script>
+
+<style scoped>
+.card-title {
+  font-size: 1.1rem;
+}
+
+.row {
+  margin-bottom: 1rem;
+}
+
+.row:last-child {
+  margin-bottom: 0;
+}
+
+.object-fit-cover {
+  object-fit: cover;
+}
+</style>
