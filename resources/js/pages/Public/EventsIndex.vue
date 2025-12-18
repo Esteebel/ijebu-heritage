@@ -16,9 +16,18 @@
               class="col-12 col-md-6 col-lg-4 animate__animated animate__fadeInUp"
             >
               <div class="card h-100 border-0 shadow-sm hover-lift">
-                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
-                  <span v-if="event.featuredMedia" class="text-light">Event Image</span>
-                  <span v-else class="text-light">No Image Available</span>
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden" style="height: 200px;">
+                  <template v-if="event.featured_media && event.featured_media.path">
+                    <img :src="'/storage/' + event.featured_media.path"
+                         :alt="event.title"
+                         class="w-100 h-100 object-fit-cover">
+                  </template>
+                  <template v-else>
+                    <div class="text-center p-4">
+                      <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                      <p class="text-muted mt-2 mb-0">No Image Available</p>
+                    </div>
+                  </template>
                 </div>
                 <div class="card-body d-flex flex-column">
                   <div class="d-flex justify-content-between align-items-start mb-3">
@@ -100,5 +109,9 @@ export default {
 
 .animate__fadeInUp {
   animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.object-fit-cover {
+  object-fit: cover;
 }
 </style>

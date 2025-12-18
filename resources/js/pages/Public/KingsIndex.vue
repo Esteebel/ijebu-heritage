@@ -16,10 +16,10 @@
               class="col-12 col-md-6 col-lg-4 animate__animated animate__fadeInUp"
             >
               <div class="card h-100 border-0 shadow-sm hover-lift">
-                <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden" style="height: 200px;">
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden" style="height: 250px;">
                   <img
-                    v-if="king.portraitMedia"
-                    :src="'/storage/' + king.portraitMedia.path"
+                    v-if="king.portrait_media"
+                    :src="'/storage/' + king.portrait_media.path"
                     class="img-fluid w-100 h-100 object-fit-cover"
                     :alt="king.name"
                     style="object-fit: cover;"

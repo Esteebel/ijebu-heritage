@@ -26,10 +26,10 @@
                             <div class="row">
                                 <div class="col-12 col-md-4 mb-4 mb-md-0">
                                     <div class="bg-light rounded-lg d-flex align-items-center justify-content-center overflow-hidden"
-                                        style="height: 300px;">
+                                        style="height: 350px;">
                                         <img
-                                          v-if="king.portraitMedia"
-                                          :src="'/storage/' + king.portraitMedia.path"
+                                          v-if="king.portrait_media"
+                                          :src="'/storage/' + king.portrait_media.path"
                                           class="img-fluid w-100 h-100 object-fit-cover"
                                           :alt="king.name"
                                           style="object-fit: cover;"

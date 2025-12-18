@@ -22,10 +22,19 @@
                         <div class="card-body p-4 p-md-5">
                             <div class="row">
                                 <div class="col-12 col-md-4 mb-4 mb-md-0">
-                                    <div class="bg-secondary rounded-lg d-flex align-items-center justify-content-center"
+                                    <div class="bg-light rounded-lg d-flex align-items-center justify-content-center overflow-hidden"
                                         style="height: 300px;">
-                                        <span v-if="event.featuredMedia" class="text-light">Event Image</span>
-                                        <span v-else class="text-light">No Image Available</span>
+                                        <template v-if="event.featured_media && event.featured_media.path">
+                                            <img :src="'/storage/' + event.featured_media.path"
+                                                 :alt="event.title"
+                                                 class="w-100 h-100 object-fit-cover">
+                                        </template>
+                                        <template v-else>
+                                            <div class="text-center p-4">
+                                                <i class="bi bi-image text-muted" style="font-size: 4rem;"></i>
+                                                <p class="text-muted mt-3 mb-0">No Image Available</p>
+                                            </div>
+                                        </template>
                                     </div>
 
                                     <div class="mt-4">
@@ -129,5 +138,9 @@ export default {
 .prose p {
     margin-bottom: 1rem;
     line-height: 1.7;
+}
+
+.object-fit-cover {
+    object-fit: cover;
 }
 </style>

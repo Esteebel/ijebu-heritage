@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Media;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class EventController extends Controller
@@ -30,8 +31,26 @@ class EventController extends Controller
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date|after:start_datetime',
             'location' => 'nullable|string|max:255',
-            'featured_media_id' => 'nullable|exists:media,id'
+            'featured_media_id' => 'nullable|exists:media,id',
+            'featured_image' => 'nullable|image|max:5120' // 5MB max
         ]);
+
+        // Handle featured image upload
+        if ($request->hasFile('featured_image')) {
+            $filename = time() . '_' . uniqid() . '_' . $request->file('featured_image')->getClientOriginalName();
+            $path = $request->file('featured_image')->storeAs('media', $filename, 'public');
+
+            $media = Media::create([
+                'filename' => $filename,
+                'path' => $path,
+                'type' => 'image',
+                'mime' => $request->file('featured_image')->getMimeType(),
+                'size' => $request->file('featured_image')->getSize(),
+                'uploaded_by' => auth()->id()
+            ]);
+
+            $validated['featured_media_id'] = $media->id;
+        }
 
         Event::create($validated);
 
@@ -59,8 +78,35 @@ class EventController extends Controller
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date|after:start_datetime',
             'location' => 'nullable|string|max:255',
-            'featured_media_id' => 'nullable|exists:media,id'
+            'featured_media_id' => 'nullable|exists:media,id',
+            'featured_image' => 'nullable|image|max:5120' // 5MB max
         ]);
+
+        // Handle featured image upload
+        if ($request->hasFile('featured_image')) {
+            // Delete old featured image if exists
+            if ($event->featured_media_id) {
+                $oldMedia = Media::find($event->featured_media_id);
+                if ($oldMedia) {
+                    Storage::disk('public')->delete($oldMedia->path);
+                    $oldMedia->delete();
+                }
+            }
+
+            $filename = time() . '_' . uniqid() . '_' . $request->file('featured_image')->getClientOriginalName();
+            $path = $request->file('featured_image')->storeAs('media', $filename, 'public');
+
+            $media = Media::create([
+                'filename' => $filename,
+                'path' => $path,
+                'type' => 'image',
+                'mime' => $request->file('featured_image')->getMimeType(),
+                'size' => $request->file('featured_image')->getSize(),
+                'uploaded_by' => auth()->id()
+            ]);
+
+            $validated['featured_media_id'] = $media->id;
+        }
 
         $event->update($validated);
 
