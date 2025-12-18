@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\KingController;
-use App\Http\Controllers\TimelineController;
+use App\Http\Controllers\KingdomController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ArtifactController;
 use App\Http\Controllers\TicketController;
@@ -35,7 +35,8 @@ Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
 Route::get('/', [PublicController::class, 'home'])->name('home');
 Route::get('/kings', [KingController::class, 'index'])->name('kings.index');
 Route::get('/kings/{king}', [KingController::class, 'show'])->name('kings.show');
-Route::get('/timeline', [TimelineController::class, 'index'])->name('timeline');
+Route::get('/kingdoms', [KingdomController::class, 'index'])->name('kingdoms.index');
+Route::get('/kingdoms/{kingdom}', [KingdomController::class, 'show'])->name('kingdoms.show');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 Route::get('/exhibits', [ArtifactController::class, 'index'])->name('exhibits.index');
@@ -105,6 +106,8 @@ Route::middleware(['auth', 'admin.editor'])->prefix('admin')->group(function () 
         'update' => 'admin.dynasties.update',
         'destroy' => 'admin.dynasties.destroy',
     ]);
+    Route::get('kingdoms', [App\Http\Controllers\KingdomController::class, 'adminIndex'])->name('admin.kingdoms.index');
+    Route::get('kingdoms/{kingdom}', [App\Http\Controllers\KingdomController::class, 'adminShow'])->name('admin.kingdoms.show');
     Route::resource('tickets', App\Http\Controllers\Admin\TicketController::class)->names([
         'index' => 'admin.tickets.index',
         'create' => 'admin.tickets.create',
@@ -149,10 +152,7 @@ Route::middleware(['auth', 'admin.editor'])->prefix('admin')->group(function () 
         return inertia('Admin/Settings/Index');
     })->name('settings.index');
 
-    // Timeline route
-    Route::get('/timeline', function () {
-        return inertia('Admin/Timeline/Index');
-    })->name('timeline.index');
+
 });
 
 // Admin-only routes (not accessible by editors)
