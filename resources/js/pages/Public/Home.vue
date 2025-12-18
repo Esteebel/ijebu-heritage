@@ -27,7 +27,7 @@
                             <p
                                 class="lead text-light opacity-90 mb-5 fs-3 animate__animated animate__fadeInUp animate__delay-1s">
                                 Journey through centuries of monarchy, explore magnificent artifacts, and uncover the
-                                fascinating stories of kings and queens who shaped history.
+                                fascinating stories of kings and queens who shaped history!.
                             </p>
                             <div
                                 class="d-flex flex-column flex-md-row justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
@@ -35,8 +35,8 @@
                                     class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-lg hover-lift">
                                     Explore Exhibits
                                 </a>
-                                <a href="/timeline" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold hover-lift">
-                                    View Timeline
+                                <a href="/kingdoms" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold hover-lift">
+                                    Explore Kingdoms
                                 </a>
                             </div>
                         </div>
@@ -80,11 +80,12 @@
                                             :style="{ 'animation-delay': (index * 0.1 + 0.1) + 's' }">
                                             <div class="card h-100 border-0 shadow-sm hover-lift">
                                                 <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
-                                                    style="height: 200px;">
-                                                    <template v-if="king.portraitMedia && king.portraitMedia.path">
-                                                        <img :src="encodeURI('/storage/' + king.portraitMedia.path)"
+                                                    style="height: 250px;">
+                                                    <template v-if="king.portrait_media && king.portrait_media.path">
+                                                        <img :src="encodeURI('/storage/' + king.portrait_media.path)"
                                                              :alt="king.name"
-                                                             class="w-100 h-100 object-fit-cover">
+                                                             class="w-100 h-100 object-fit-cover"
+                                                             @error="handleImageError($event)">
                                                     </template>
                                                     <template v-else>
                                                         <span class="text-light">{{ king.name }}</span>
@@ -141,7 +142,8 @@
                                                 <template v-if="item.media && item.media.path">
                                                     <img :src="encodeURI('/storage/' + item.media.path)"
                                                         class="w-100" style="height: 200px; object-fit: cover;"
-                                                        :alt="item.title || 'Gallery Item'">
+                                                        :alt="item.title || 'Gallery Item'"
+                                                        @error="handleImageError($event)">
                                                 </template>
                                                 <template v-else>
                                                     <div class="bg-secondary w-100 d-flex align-items-center justify-content-center"
@@ -166,6 +168,132 @@
                                 </div>
                             </section>
 
+                            <!-- Kingdoms Section -->
+                            <section class="kingdoms-section mb-5">
+                                <div class="row mb-4">
+                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <h2 class="h2 fw-bold text-dark mb-0">Kingdoms & Dynasties</h2>
+                                        <a href="/kingdoms"
+                                            class="btn btn-outline-primary d-flex align-items-center hover-effect">
+                                            View All Kingdoms
+                                            <i class="bi bi-arrow-right ms-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row g-4">
+                                    <!-- Kingdoms from Database -->
+                                    <template v-if="featuredKingdoms && featuredKingdoms.length > 0">
+                                        <div v-for="(kingdom, index) in featuredKingdoms" :key="kingdom.id"
+                                            class="col-12 col-md-6 col-lg-3">
+                                            <div class="card h-100 border-0 shadow-sm hover-lift">
+                                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden"
+                                                    style="height: 150px;">
+                                                    <div class="text-center p-3">
+                                                        <i class="bi bi-building text-muted" style="font-size: 3rem;"></i>
+                                                        <p class="text-muted mt-2 mb-0">{{ kingdom.name }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h3 class="h5 fw-bold text-dark mb-3">{{ kingdom.name }}</h3>
+                                                    <p class="text-muted small mb-3">{{ kingdom.kings_count }} Kings</p>
+                                                    <a :href="'/kingdoms/' + kingdom.id" class="btn btn-outline-primary btn-sm">Explore</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        <!-- Fallback content -->
+                                        <div v-for="index in 4" :key="index" class="col-12 col-md-6 col-lg-3">
+                                            <div class="card h-100 border-0 shadow-sm hover-lift">
+                                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden"
+                                                    style="height: 150px;">
+                                                    <div class="text-center p-3">
+                                                        <i class="bi bi-building text-muted" style="font-size: 3rem;"></i>
+                                                        <p class="text-muted mt-2 mb-0">Kingdom {{ index }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h3 class="h5 fw-bold text-dark mb-3">Kingdom {{ index }}</h3>
+                                                    <p class="text-muted small mb-3">0 Kings</p>
+                                                    <a href="/kingdoms" class="btn btn-outline-primary btn-sm">Explore</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </section>
+
+                            <!-- Current Kings Section -->
+                            <section class="current-kings-section mb-5">
+                                <div class="row mb-4">
+                                    <div class="col-12 d-flex justify-content-between align-items-center">
+                                        <h2 class="h2 fw-bold text-dark mb-0">Current Kings</h2>
+                                        <a href="/kings"
+                                            class="btn btn-outline-primary d-flex align-items-center hover-effect">
+                                            View All Kings
+                                            <i class="bi bi-arrow-right ms-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row g-4">
+                                    <!-- Current Kings from Database -->
+                                    <template v-if="currentKings && currentKings.length > 0">
+                                        <div v-for="(king, index) in currentKings" :key="king.id"
+                                            class="col-12 col-md-6 col-lg-4">
+                                            <div class="card h-100 border-0 shadow-sm hover-lift">
+                                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden"
+                                                    style="height: 250px;">
+                                                    <template v-if="king.portrait_media && king.portrait_media.path">
+                                                        <img :src="encodeURI('/storage/' + king.portrait_media.path)"
+                                                                :alt="king.name"
+                                                                class="w-100 h-100 object-fit-cover"
+                                                                @error="handleImageError($event)">
+                                                    </template>
+                                                    <template v-else>
+                                                        <div class="text-center p-4">
+                                                            <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
+                                                            <p class="text-muted mt-2 mb-0">No Image Available</p>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                                        <h3 class="h5 fw-bold text-dark mb-0">{{ king.name }}</h3>
+                                                        <span class="badge bg-success-subtle text-success">{{ king.dynasty ? king.dynasty.name : 'Unknown Dynasty' }}</span>
+                                                    </div>
+                                                    <p class="text-muted">{{ king.short_bio || 'No biography available.' }}</p>
+                                                    <a :href="route('kings.show', king.id)" class="btn btn-outline-primary btn-sm">Read More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        <!-- Fallback content -->
+                                        <div v-for="index in 3" :key="index" class="col-12 col-md-6 col-lg-4">
+                                            <div class="card h-100 border-0 shadow-sm hover-lift">
+                                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden"
+                                                    style="height: 200px;">
+                                                    <div class="text-center p-4">
+                                                        <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
+                                                        <p class="text-muted mt-2 mb-0">No Image Available</p>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                                        <h3 class="h5 fw-bold text-dark mb-0">Current King {{ index }}</h3>
+                                                        <span class="badge bg-success-subtle text-success">Unknown Dynasty</span>
+                                                    </div>
+                                                    <p class="text-muted">Biography not available at the moment.</p>
+                                                    <a href="/kings" class="btn btn-outline-primary btn-sm">Read More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </section>
+
                             <!-- Past Kings Section -->
                             <section class="past-kings-section mb-5">
                                 <div class="row mb-4">
@@ -181,16 +309,17 @@
 
                                 <div class="row g-4">
                                     <!-- Past Kings from Database -->
-                                    <template v-if="allKings && allKings.length > 0">
-                                        <div v-for="(king, index) in allKings" :key="king.id"
+                                    <template v-if="pastKings && pastKings.length > 0">
+                                        <div v-for="(king, index) in pastKings" :key="king.id"
                                             class="col-12 col-md-6 col-lg-4">
                                             <div class="card h-100 border-0 shadow-sm hover-lift">
                                                 <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden"
-                                                    style="height: 200px;">
-                                                    <template v-if="king.portraitMedia && king.portraitMedia.path">
-                                                        <img :src="encodeURI('/storage/' + king.portraitMedia.path)"
+                                                    style="height: 250px;">
+                                                    <template v-if="king.portrait_media && king.portrait_media.path">
+                                                        <img :src="encodeURI('/storage/' + king.portrait_media.path)"
                                                                 :alt="king.name"
-                                                                class="w-100 h-100 object-fit-cover">
+                                                                class="w-100 h-100 object-fit-cover"
+                                                                @error="handleImageError($event)">
                                                     </template>
                                                     <template v-else>
                                                         <div class="text-center p-4">
@@ -254,15 +383,35 @@
                                         <div v-for="(event, index) in upcomingEvents" :key="event.id"
                                             class="col-12 col-lg-6">
                                             <div class="card border-start border-4 border-primary shadow-sm h-100">
-                                                <div class="card-body">
-                                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                                        <h3 class="h4 fw-bold text-dark mb-0">{{ event.title }}</h3>
-                                                        <span class="text-muted small">{{ formatDateRange(event.start_datetime, event.end_datetime) }}</span>
+                                                <div class="row g-0">
+                                                    <div class="col-md-4">
+                                                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center overflow-hidden h-100">
+                                                            <template v-if="event.featured_media && event.featured_media.path">
+                                                                <img :src="encodeURI('/storage/' + event.featured_media.path)"
+                                                                    class="w-100 h-100 object-fit-cover"
+                                                                    :alt="event.title"
+                                                                    @error="handleImageError($event)">
+                                                            </template>
+                                                            <template v-else>
+                                                                <div class="text-center p-3">
+                                                                    <i class="bi bi-calendar-event text-muted" style="font-size: 2rem;"></i>
+                                                                    <p class="text-muted mt-2 mb-0 small">No Image</p>
+                                                                </div>
+                                                            </template>
+                                                        </div>
                                                     </div>
-                                                    <p class="text-muted mb-4">{{ event.description || 'No description available.' }}</p>
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <span class="text-muted small">{{ event.location || 'Location TBD' }}</span>
-                                                        <a :href="route('events.show', event.id)" class="btn btn-outline-primary btn-sm">Learn More</a>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                                                <h3 class="h4 fw-bold text-dark mb-0">{{ event.title }}</h3>
+                                                                <span class="text-muted small">{{ formatDateRange(event.start_datetime, event.end_datetime) }}</span>
+                                                            </div>
+                                                            <p class="text-muted mb-4">{{ event.description || 'No description available.' }}</p>
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <span class="text-muted small">{{ event.location || 'Location TBD' }}</span>
+                                                                <a :href="route('events.show', event.id)" class="btn btn-outline-primary btn-sm">Learn More</a>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -324,11 +473,19 @@ export default {
             type: Array,
             default: () => []
         },
-        allKings: {
+        currentKings: {
+            type: Array,
+            default: () => []
+        },
+        pastKings: {
             type: Array,
             default: () => []
         },
         upcomingEvents: {
+            type: Array,
+            default: () => []
+        },
+        featuredKingdoms: {
             type: Array,
             default: () => []
         },
@@ -380,6 +537,28 @@ export default {
         },
         goToSlide(index) {
             this.currentSlide = index;
+        },
+        handleImageError(event) {
+            // When an image fails to load, replace it with the fallback content
+            const imgElement = event.target;
+            const cardImgTop = imgElement.closest('.card-img-top');
+
+            if (cardImgTop) {
+                // Hide the broken image
+                imgElement.style.display = 'none';
+
+                // Check if fallback already exists to prevent duplicates
+                if (!cardImgTop.querySelector('.image-fallback')) {
+                    // Create fallback content
+                    const fallbackDiv = document.createElement('div');
+                    fallbackDiv.className = 'image-fallback text-center p-4';
+                    fallbackDiv.innerHTML = `
+                        <i class="bi bi-person-circle text-muted" style="font-size: 4rem;"></i>
+                        <p class="text-muted mt-2 mb-0">No Image Available</p>
+                    `;
+                    cardImgTop.appendChild(fallbackDiv);
+                }
+            }
         },
         route(name, params) {
             // Simple route helper for demonstration
@@ -448,6 +627,16 @@ export default {
 </script>
 
 <style scoped>
+/* Image fallback */
+.image-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
 /* Full width section to break out of container */
 .full-width-section {
     margin-left: calc(50% - 50vw);

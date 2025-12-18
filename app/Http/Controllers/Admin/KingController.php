@@ -26,10 +26,18 @@ class KingController extends Controller
 
     public function store(Request $request)
     {
+        // Handle empty string values for nullable integer fields
+        if ($request->death_year === '') {
+            $request->merge(['death_year' => null]);
+        }
+        if ($request->dynasty_id === '') {
+            $request->merge(['dynasty_id' => null]);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'regnal_name' => 'nullable|string|max:255',
-            'birth_year' => 'nullable|integer',
+            'birth_date' => 'nullable|date',
             'death_year' => 'nullable|integer',
             'reign_start_date' => 'nullable|date',
             'reign_end_date' => 'nullable|date',
@@ -77,10 +85,18 @@ class KingController extends Controller
 
     public function update(Request $request, King $king)
     {
+        // Handle empty string values for nullable integer fields
+        if ($request->death_year === '') {
+            $request->merge(['death_year' => null]);
+        }
+        if ($request->dynasty_id === '') {
+            $request->merge(['dynasty_id' => null]);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'regnal_name' => 'nullable|string|max:255',
-            'birth_year' => 'nullable|integer',
+            'birth_date' => 'nullable|date',
             'death_year' => 'nullable|integer',
             'reign_start_date' => 'nullable|date',
             'reign_end_date' => 'nullable|date',

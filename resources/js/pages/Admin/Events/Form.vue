@@ -127,12 +127,23 @@
                 >
                   <option value="">Select featured image</option>
                   <option v-for="medium in media" :key="medium.id" :value="medium.id">
-                    {{ medium.file_name }}
+                    {{ medium.filename }}
                   </option>
                 </select>
                 <div v-if="errors.featured_media_id" class="invalid-feedback">
                   {{ errors.featured_media_id }}
                 </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Or Upload New Image</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  accept="image/*"
+                  @change="handleImageUpload"
+                >
+                <div class="form-text">Upload a new featured image for this event</div>
               </div>
 
               <div v-if="form.featured_media_id" class="mt-3">
@@ -198,6 +209,7 @@ export default {
         end_datetime: this.event?.end_datetime || '',
         location: this.event?.location || '',
         featured_media_id: this.event?.featured_media_id || '',
+        featured_image: null, // For direct uploads
         published: this.event?.published || false
       },
       errors: {},
@@ -220,7 +232,27 @@ export default {
 
       const method = this.event ? 'put' : 'post'
 
-      this.$inertia[method](url, this.form, {
+      // Use FormData for file uploads
+      const formData = new FormData();
+
+      // Add all form fields
+      Object.keys(this.form).forEach(key => {
+        if (key !== 'featured_image') {
+          formData.append(key, this.form[key]);
+        }
+      });
+
+      // Add featured image if present
+      if (this.form.featured_image) {
+        formData.append('featured_image', this.form.featured_image);
+      }
+
+      // Add _method for PUT requests
+      if (this.event) {
+        formData.append('_method', 'PUT');
+      }
+
+      this.$inertia.post(url, formData, {
         onSuccess: () => {
           this.processing = false
         },
@@ -233,6 +265,14 @@ export default {
     getMediaUrl(mediaId) {
       const mediaItem = this.media.find(m => m.id == mediaId)
       return mediaItem ? `/storage/${mediaItem.file_path}` : ''
+    },
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.form.featured_image = file;
+        // Clear the selected media ID since we're uploading a new image
+        this.form.featured_media_id = '';
+      }
     }
   }
 }
