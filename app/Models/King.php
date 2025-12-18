@@ -14,7 +14,7 @@ class King extends Model
     protected $fillable = [
         'name',
         'regnal_name',
-        'birth_year',
+        'birth_date',
         'death_year',
         'reign_start_date',
         'reign_end_date',
@@ -27,6 +27,7 @@ class King extends Model
 
     protected $casts = [
         'featured' => 'boolean',
+        'birth_date' => 'date',
         'reign_start_date' => 'date',
         'reign_end_date' => 'date'
     ];

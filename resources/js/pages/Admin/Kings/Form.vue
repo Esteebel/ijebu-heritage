@@ -54,16 +54,16 @@
                   </div>
 
                   <div class="col-md-6">
-                    <label for="birth_year" class="form-label">Birth Year</label>
+                    <label for="birth_date" class="form-label">Birth Date</label>
                     <input
-                      id="birth_year"
-                      v-model="form.birth_year"
-                      type="number"
+                      id="birth_date"
+                      v-model="form.birth_date"
+                      type="date"
                       class="form-control"
-                      :class="{ 'is-invalid': form.errors.birth_year }"
+                      :class="{ 'is-invalid': form.errors.birth_date }"
                     >
-                    <div class="invalid-feedback" v-if="form.errors.birth_year">
-                      {{ form.errors.birth_year }}
+                    <div class="invalid-feedback" v-if="form.errors.birth_date">
+                      {{ form.errors.birth_date }}
                     </div>
                   </div>
 
@@ -575,7 +575,13 @@ export default {
               // Ensure featured is sent as proper boolean string
               formData.append(key, this.form[key] ? '1' : '0');
             } else {
-              formData.append(key, this.form[key]);
+              // Handle empty values for nullable integer fields
+              if ((key === 'death_year' || key === 'dynasty_id') && (this.form[key] === '' || this.form[key] === null)) {
+                // Skip empty values for nullable integer fields
+                // They will be treated as null on the server side
+              } else {
+                formData.append(key, this.form[key]);
+              }
             }
           }
         });
@@ -615,7 +621,13 @@ export default {
               // Ensure featured is sent as proper boolean string
               formData.append(key, this.form[key] ? '1' : '0');
             } else {
-              formData.append(key, this.form[key]);
+              // Handle empty values for nullable integer fields
+              if ((key === 'death_year' || key === 'dynasty_id') && (this.form[key] === '' || this.form[key] === null)) {
+                // Skip empty values for nullable integer fields
+                // They will be treated as null on the server side
+              } else {
+                formData.append(key, this.form[key]);
+              }
             }
           }
         });

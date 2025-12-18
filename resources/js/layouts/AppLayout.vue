@@ -24,7 +24,7 @@
                   <a class="nav-link text-light fw-medium mx-2 mx-md-3 hover-effect" href="/kings">Kings</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-light fw-medium mx-2 mx-md-3 hover-effect" href="/timeline">Timeline</a>
+                  <a class="nav-link text-light fw-medium mx-2 mx-md-3 hover-effect" href="/kingdoms">Kingdoms</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-light fw-medium mx-2 mx-md-3 hover-effect" href="/gallery">Gallery</a>
@@ -68,7 +68,7 @@
             <ul class="list-unstyled">
               <li class="mb-2"><a href="/" class="text-light opacity-75 text-decoration-none hover-effect">Home</a></li>
               <li class="mb-2"><a href="/kings" class="text-light opacity-75 text-decoration-none hover-effect">Kings & Queens</a></li>
-              <li class="mb-2"><a href="/timeline" class="text-light opacity-75 text-decoration-none hover-effect">Historical Timeline</a></li>
+              <li class="mb-2"><a href="/kingdoms" class="text-light opacity-75 text-decoration-none hover-effect">Kingdoms & Dynasties</a></li>
               <li class="mb-2"><a href="/gallery" class="text-light opacity-75 text-decoration-none hover-effect">Artifact Gallery</a></li>
               <li class="mb-2"><a href="/events" class="text-light opacity-75 text-decoration-none hover-effect">Events</a></li>
             </ul>
