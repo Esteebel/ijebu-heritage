@@ -182,6 +182,116 @@
               </inertia-link>
             </li>
 
+            <!-- Ijebu Heritage Museum Sections -->
+            <li class="nav-item mt-3">
+              <h6 class="text-uppercase text-light small mb-2 opacity-75">Ijebu Heritage</h6>
+            </li>
+
+            <li class="nav-item mb-1">
+              <inertia-link
+                :href="$route('admin.historical.events.index')"
+                class="nav-link text-white d-flex align-items-center"
+                :class="{ 'active': $page.url.startsWith('/admin/historical/events') }"
+              >
+                <svg class="me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                Historical Events
+              </inertia-link>
+            </li>
+
+            <li class="nav-item mb-1">
+              <inertia-link
+                :href="$route('admin.festivals.index')"
+                class="nav-link text-white d-flex align-items-center"
+                :class="{ 'active': $page.url.startsWith('/admin/festivals') }"
+              >
+                <svg class="me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Festivals
+              </inertia-link>
+            </li>
+
+            <li class="nav-item mb-1">
+              <inertia-link
+                :href="$route('admin.foods.index')"
+                class="nav-link text-white d-flex align-items-center"
+                :class="{ 'active': $page.url.startsWith('/admin/foods') }"
+              >
+                <svg class="me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"></path>
+                </svg>
+                Cuisine
+              </inertia-link>
+            </li>
+
+            <li class="nav-item mb-1">
+              <inertia-link
+                :href="$route('admin.sites.index')"
+                class="nav-link text-white d-flex align-items-center"
+                :class="{ 'active': $page.url.startsWith('/admin/sites') }"
+              >
+                <svg class="me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                Historical Sites
+              </inertia-link>
+            </li>
+
+            <li class="nav-item mb-1">
+              <inertia-link
+                :href="$route('admin.personalities.index')"
+                class="nav-link text-white d-flex align-items-center"
+                :class="{ 'active': $page.url.startsWith('/admin/personalities') }"
+              >
+                <svg class="me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+                Notable Figures
+              </inertia-link>
+            </li>
+
+            <li class="nav-item mb-1">
+              <inertia-link
+                :href="$route('admin.language.items.index')"
+                class="nav-link text-white d-flex align-items-center"
+                :class="{ 'active': $page.url.startsWith('/admin/language') }"
+              >
+                <svg class="me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                </svg>
+                Language
+              </inertia-link>
+            </li>
+
+            <li class="nav-item mb-1">
+              <inertia-link
+                :href="$route('admin.oral.histories.index')"
+                class="nav-link text-white d-flex align-items-center"
+                :class="{ 'active': $page.url.startsWith('/admin/oral/histories') }"
+              >
+                <svg class="me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                </svg>
+                Oral Histories
+              </inertia-link>
+            </li>
+
+            <li class="nav-item mb-1">
+              <inertia-link
+                :href="$route('admin.diaspora.stories.index')"
+                class="nav-link text-white d-flex align-items-center"
+                :class="{ 'active': $page.url.startsWith('/admin/diaspora/stories') }"
+              >
+                <svg class="me-2" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Diaspora Stories
+              </inertia-link>
+            </li>
+
             <!-- Admin-only sections -->
             <div v-if="isAdmin">
               <li class="nav-item mt-3">
@@ -332,6 +442,14 @@ export default {
       if (path.includes('publishing')) return 'Publishing Queue';
       if (path.includes('users')) return 'Users & Roles';
       if (path.includes('settings')) return 'Settings';
+      if (path.includes('historical/events')) return 'Historical Events';
+      if (path.includes('festivals')) return 'Festivals';
+      if (path.includes('foods')) return 'Cuisine';
+      if (path.includes('sites')) return 'Historical Sites';
+      if (path.includes('personalities')) return 'Notable Figures';
+      if (path.includes('language')) return 'Language Documentation';
+      if (path.includes('oral/histories')) return 'Oral Histories';
+      if (path.includes('diaspora/stories')) return 'Diaspora Stories';
       return 'Dashboard';
     }
   },

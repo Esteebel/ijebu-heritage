@@ -65,4 +65,38 @@ class PublicController extends BaseController
             'featuredKingdoms' => $featuredKingdoms
         ]);
     }
+
+    public function photoArchives()
+    {
+        $photos = \App\Models\PhotoArchive::with('media')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return $this->render('Public/PhotoArchives/Index', [
+            'photos' => $photos
+        ]);
+    }
+
+    public function oralHistories()
+    {
+        $stories = \App\Models\OralHistoryArchive::with('audioFile', 'featuredMedia')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return $this->render('Public/OralHistories/Index', [
+            'stories' => $stories
+        ]);
+    }
+
+    public function oluCorner()
+    {
+        $sections = \App\Models\OluCorner::with('featuredMedia')
+            ->where('is_published', true)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return $this->render('Public/OluCorner/Index', [
+            'sections' => $sections
+        ]);
+    }
 }

@@ -22,5 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call(TourSeeder::class);
         $this->call(BookingSeeder::class);
         $this->call(PublishingQueueSeeder::class);
+        $this->call(PhotoArchiveSeeder::class);
+        $this->call(OralHistoryArchiveSeeder::class);
+        $this->call(OluCornerSeeder::class);
     }
 }

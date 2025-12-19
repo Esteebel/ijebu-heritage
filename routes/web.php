@@ -8,6 +8,14 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\ArtifactController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TourController;
+use App\Http\Controllers\FestivalController;
+use App\Http\Controllers\FoodController;
+use App\Http\Controllers\HistoricalSiteController;
+use App\Http\Controllers\PersonalityController;
+use App\Http\Controllers\LanguageItemController;
+use App\Http\Controllers\OralHistoryController;
+use App\Http\Controllers\DiasporaStoryController;
+use App\Http\Controllers\HistoricalEventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +54,24 @@ Route::get('/virtual-tour', [TourController::class, 'index'])->name('tour.index'
 
 // Gallery route pointing to exhibits
 Route::get('/gallery', [ArtifactController::class, 'index'])->name('gallery.index');
+
+// Ijebu Heritage Museum routes
+Route::get('/festivals', [FestivalController::class, 'index'])->name('festivals.index');
+Route::get('/festivals/{festival}', [FestivalController::class, 'show'])->name('festivals.show');
+Route::get('/foods', [FoodController::class, 'index'])->name('foods.index');
+Route::get('/foods/{food}', [FoodController::class, 'show'])->name('foods.show');
+Route::get('/sites', [HistoricalSiteController::class, 'index'])->name('sites.index');
+Route::get('/sites/{site}', [HistoricalSiteController::class, 'show'])->name('sites.show');
+Route::get('/personalities', [PersonalityController::class, 'index'])->name('personalities.index');
+Route::get('/personalities/{personality}', [PersonalityController::class, 'show'])->name('personalities.show');
+Route::get('/language', [LanguageItemController::class, 'index'])->name('language.items.index');
+Route::get('/language/{languageItem}', [LanguageItemController::class, 'show'])->name('language.items.show');
+Route::get('/oral-histories', [OralHistoryController::class, 'index'])->name('oral.histories.index');
+Route::get('/oral-histories/{oralHistory}', [OralHistoryController::class, 'show'])->name('oral.histories.show');
+Route::get('/diaspora', [DiasporaStoryController::class, 'index'])->name('diaspora.stories.index');
+Route::get('/diaspora/{diasporaStory}', [DiasporaStoryController::class, 'show'])->name('diaspora.stories.show');
+Route::get('/historical-events', [HistoricalEventController::class, 'index'])->name('historical.events.index');
+Route::get('/historical-events/{event}', [HistoricalEventController::class, 'show'])->name('historical.events.show');
 
 // ... traditions, contact
 
@@ -147,12 +173,127 @@ Route::middleware(['auth', 'admin.editor'])->prefix('admin')->group(function () 
     Route::post('publishing/queue/{publishingQueue}/publish', [App\Http\Controllers\Admin\PublishingQueueController::class, 'publish'])->name('admin.publishing.queue.publish');
     Route::post('media/bulk-upload', [App\Http\Controllers\Admin\MediaController::class, 'bulkUpload']);
 
+    // Ijebu Heritage Museum Admin Routes
+    Route::resource('festivals', App\Http\Controllers\Admin\FestivalController::class)->names([
+        'index' => 'admin.festivals.index',
+        'create' => 'admin.festivals.create',
+        'store' => 'admin.festivals.store',
+        'show' => 'admin.festivals.show',
+        'edit' => 'admin.festivals.edit',
+        'update' => 'admin.festivals.update',
+        'destroy' => 'admin.festivals.destroy',
+    ]);
+    Route::resource('foods', App\Http\Controllers\Admin\FoodController::class)->names([
+        'index' => 'admin.foods.index',
+        'create' => 'admin.foods.create',
+        'store' => 'admin.foods.store',
+        'show' => 'admin.foods.show',
+        'edit' => 'admin.foods.edit',
+        'update' => 'admin.foods.update',
+        'destroy' => 'admin.foods.destroy',
+    ]);
+    Route::resource('sites', App\Http\Controllers\Admin\HistoricalSiteController::class)->names([
+        'index' => 'admin.sites.index',
+        'create' => 'admin.sites.create',
+        'store' => 'admin.sites.store',
+        'show' => 'admin.sites.show',
+        'edit' => 'admin.sites.edit',
+        'update' => 'admin.sites.update',
+        'destroy' => 'admin.sites.destroy',
+    ]);
+    Route::resource('personalities', App\Http\Controllers\Admin\PersonalityController::class)->names([
+        'index' => 'admin.personalities.index',
+        'create' => 'admin.personalities.create',
+        'store' => 'admin.personalities.store',
+        'show' => 'admin.personalities.show',
+        'edit' => 'admin.personalities.edit',
+        'update' => 'admin.personalities.update',
+        'destroy' => 'admin.personalities.destroy',
+    ]);
+    Route::resource('language/items', App\Http\Controllers\Admin\LanguageItemController::class)->names([
+        'index' => 'admin.language.items.index',
+        'create' => 'admin.language.items.create',
+        'store' => 'admin.language.items.store',
+        'show' => 'admin.language.items.show',
+        'edit' => 'admin.language.items.edit',
+        'update' => 'admin.language.items.update',
+        'destroy' => 'admin.language.items.destroy',
+    ]);
+    Route::resource('oral/histories', App\Http\Controllers\Admin\OralHistoryController::class)->names([
+        'index' => 'admin.oral.histories.index',
+        'create' => 'admin.oral.histories.create',
+        'store' => 'admin.oral.histories.store',
+        'show' => 'admin.oral.histories.show',
+        'edit' => 'admin.oral.histories.edit',
+        'update' => 'admin.oral.histories.update',
+        'destroy' => 'admin.oral.histories.destroy',
+    ]);
+    Route::resource('diaspora/stories', App\Http\Controllers\Admin\DiasporaStoryController::class)->names([
+        'index' => 'admin.diaspora.stories.index',
+        'create' => 'admin.diaspora.stories.create',
+        'store' => 'admin.diaspora.stories.store',
+        'show' => 'admin.diaspora.stories.show',
+        'edit' => 'admin.diaspora.stories.edit',
+        'update' => 'admin.diaspora.stories.update',
+        'destroy' => 'admin.diaspora.stories.destroy',
+    ]);
+    Route::resource('historical/events', App\Http\Controllers\Admin\HistoricalEventController::class)->names([
+        'index' => 'admin.historical.events.index',
+        'create' => 'admin.historical.events.create',
+        'store' => 'admin.historical.events.store',
+        'show' => 'admin.historical.events.show',
+        'edit' => 'admin.historical.events.edit',
+        'update' => 'admin.historical.events.update',
+        'destroy' => 'admin.historical.events.destroy',
+    ]);
+
+    // Photo Archive
+    Route::resource('photo/archives', App\Http\Controllers\Admin\PhotoArchiveController::class)->names([
+        'index' => 'admin.photo.archives.index',
+        'create' => 'admin.photo.archives.create',
+        'store' => 'admin.photo.archives.store',
+        'show' => 'admin.photo.archives.show',
+        'edit' => 'admin.photo.archives.edit',
+        'update' => 'admin.photo.archives.update',
+        'destroy' => 'admin.photo.archives.destroy',
+    ]);
+
+    // Oral History Archive
+    Route::resource('oral/history/archives', App\Http\Controllers\Admin\OralHistoryArchiveController::class)->names([
+        'index' => 'admin.oral.history.archives.index',
+        'create' => 'admin.oral.history.archives.create',
+        'store' => 'admin.oral.history.archives.store',
+        'show' => 'admin.oral.history.archives.show',
+        'edit' => 'admin.oral.history.archives.edit',
+        'update' => 'admin.oral.history.archives.update',
+        'destroy' => 'admin.oral.history.archives.destroy',
+    ]);
+
+    // Olu's Corner
+    Route::resource('olu/corner', App\Http\Controllers\Admin\OluCornerController::class)->names([
+        'index' => 'admin.olu.corner.index',
+        'create' => 'admin.olu.corner.create',
+        'store' => 'admin.olu.corner.store',
+        'show' => 'admin.olu.corner.show',
+        'edit' => 'admin.olu.corner.edit',
+        'update' => 'admin.olu.corner.update',
+        'destroy' => 'admin.olu.corner.destroy',
+    ]);
+
     // Settings route
     Route::get('/settings', function () {
         return inertia('Admin/Settings/Index');
     })->name('settings.index');
 
 
+    // Photo Archives Public Route
+    Route::get('/photo-archives', [App\Http\Controllers\PublicController::class, 'photoArchives'])->name('public.photo.archives');
+
+    // Oral Histories Public Route
+    Route::get('/oral-histories', [App\Http\Controllers\PublicController::class, 'oralHistories'])->name('public.oral.histories');
+
+    // Olu's Corner Public Route
+    Route::get('/olu-corner', [App\Http\Controllers\PublicController::class, 'oluCorner'])->name('public.olu.corner');
 });
 
 // Admin-only routes (not accessible by editors)
