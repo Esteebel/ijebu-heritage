@@ -75,6 +75,11 @@ Route::get('/historical-events/{event}', [HistoricalEventController::class, 'sho
 
 // ... traditions, contact
 
+// Public routes for Ijebu Heritage Museum
+Route::get('/photo-archives', [App\Http\Controllers\PublicController::class, 'photoArchives'])->name('public.photo.archives');
+Route::get('/oral-histories', [App\Http\Controllers\PublicController::class, 'oralHistories'])->name('public.oral.histories');
+Route::get('/olu-corner', [App\Http\Controllers\PublicController::class, 'oluCorner'])->name('public.olu.corner');
+
 // Admin (auth + middleware)
 Route::middleware(['auth', 'admin.editor'])->prefix('admin')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
@@ -284,16 +289,6 @@ Route::middleware(['auth', 'admin.editor'])->prefix('admin')->group(function () 
     Route::get('/settings', function () {
         return inertia('Admin/Settings/Index');
     })->name('settings.index');
-
-
-    // Photo Archives Public Route
-    Route::get('/photo-archives', [App\Http\Controllers\PublicController::class, 'photoArchives'])->name('public.photo.archives');
-
-    // Oral Histories Public Route
-    Route::get('/oral-histories', [App\Http\Controllers\PublicController::class, 'oralHistories'])->name('public.oral.histories');
-
-    // Olu's Corner Public Route
-    Route::get('/olu-corner', [App\Http\Controllers\PublicController::class, 'oluCorner'])->name('public.olu.corner');
 });
 
 // Admin-only routes (not accessible by editors)

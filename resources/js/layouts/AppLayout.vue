@@ -77,40 +77,50 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-navbar-footer text-light py-5 mt-auto">
+    <footer class="bg-navbar-footer text-light py-4 mt-auto">
       <div class="container">
         <div class="row">
-          <div class="col-12 col-md-4 mb-4 mb-md-0">
+          <div class="col-12 col-md-3 mb-4 mb-md-0">
             <div class="d-flex align-items-center mb-3">
               <a href="/" class="d-flex align-items-center text-decoration-none">
-                <img src="/storage/media/images/Ijebu-heritage-logo-removebg-preview.png" alt="Ijebu Heritage Logo" class="me-3" style="width: 100px; height: 100px; object-fit: contain;">
-                <h3 class="h4 fw-bold text-light mb-0">Ijebu Heritage</h3>
+                <img src="/storage/media/images/Ijebu-heritage-logo-removebg-preview.png" alt="Ijebu Heritage Logo" class="me-3" style="width: 80px; height: 80px; object-fit: contain;">
+                <h3 class="h5 fw-bold text-light mb-0">Ijebu Heritage</h3>
               </a>
             </div>
-            <p class="text-light opacity-75">Preserving the rich history of royal kingdoms through interactive exhibits and artifacts.</p>
+            <p class="text-light opacity-75 small">Preserving the rich history of royal kingdoms through interactive exhibits and artifacts.</p>
           </div>
-          <div class="col-12 col-md-4 mb-4 mb-md-0">
-            <h4 class="h5 fw-semibold mb-3">Quick Links</h4>
-            <ul class="list-unstyled">
-              <li class="mb-2"><a href="/" class="text-light opacity-75 text-decoration-none hover-effect">Home</a></li>
-              <li class="mb-2"><a href="/historical-events" class="text-light opacity-75 text-decoration-none hover-effect">Timeline</a></li>
-              <li class="mb-2"><a href="/kings" class="text-light opacity-75 text-decoration-none hover-effect">Kings & Queens</a></li>
-              <li class="mb-2"><a href="/kingdoms" class="text-light opacity-75 text-decoration-none hover-effect">Kingdoms & Dynasties</a></li>
-              <li class="mb-2"><a href="/festivals" class="text-light opacity-75 text-decoration-none hover-effect">Festivals</a></li>
-              <li class="mb-2"><a href="/foods" class="text-light opacity-75 text-decoration-none hover-effect">Cuisine</a></li>
-              <li class="mb-2"><a href="/sites" class="text-light opacity-75 text-decoration-none hover-effect">Historical Sites</a></li>
-              <li class="mb-2"><a href="/gallery" class="text-light opacity-75 text-decoration-none hover-effect">Artifact Gallery</a></li>
-              <li class="mb-2"><a href="/personalities" class="text-light opacity-75 text-decoration-none hover-effect">Notable Figures</a></li>
-              <li class="mb-2"><a href="/oral-histories" class="text-light opacity-75 text-decoration-none hover-effect">Oral Histories</a></li>
-              <li class="mb-2"><a href="/diaspora" class="text-light opacity-75 text-decoration-none hover-effect">Diaspora</a></li>
-              <li class="mb-2"><a href="/language" class="text-light opacity-75 text-decoration-none hover-effect">Language</a></li>
-              <li class="mb-2"><a href="/photo-archives" class="text-light opacity-75 text-decoration-none hover-effect">Photo Archives</a></li>
-              <li class="mb-2"><a href="/olu-corner" class="text-light opacity-75 text-decoration-none hover-effect">Olu's Corner</a></li>
-            </ul>
+          <div class="col-12 col-md-6 mb-4 mb-md-0">
+            <div class="text-center mb-3">
+              <h4 class="h5 fw-semibold mb-0">Quick Links</h4>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <ul class="list-unstyled">
+                  <li class="mb-2"><a href="/" class="text-light opacity-75 text-decoration-none hover-effect">Home</a></li>
+                  <li class="mb-2"><a href="/historical-events" class="text-light opacity-75 text-decoration-none hover-effect">Timeline</a></li>
+                  <li class="mb-2"><a href="/kings" class="text-light opacity-75 text-decoration-none hover-effect">Kings & Queens</a></li>
+                  <li class="mb-2"><a href="/kingdoms" class="text-light opacity-75 text-decoration-none hover-effect">Kingdoms & Dynasties</a></li>
+                  <li class="mb-2"><a href="/festivals" class="text-light opacity-75 text-decoration-none hover-effect">Festivals</a></li>
+                  <li class="mb-2"><a href="/foods" class="text-light opacity-75 text-decoration-none hover-effect">Cuisine</a></li>
+                  <li class="mb-2"><a href="/sites" class="text-light opacity-75 text-decoration-none hover-effect">Historical Sites</a></li>
+                </ul>
+              </div>
+              <div class="col-6">
+                <ul class="list-unstyled">
+                  <li class="mb-2"><a href="/gallery" class="text-light opacity-75 text-decoration-none hover-effect">Artifact Gallery</a></li>
+                  <li class="mb-2"><a href="/personalities" class="text-light opacity-75 text-decoration-none hover-effect">Notable Figures</a></li>
+                  <li class="mb-2"><a href="/oral-histories" class="text-light opacity-75 text-decoration-none hover-effect">Oral Histories</a></li>
+                  <li class="mb-2"><a href="/diaspora" class="text-light opacity-75 text-decoration-none hover-effect">Diaspora</a></li>
+                  <li class="mb-2"><a href="/language" class="text-light opacity-75 text-decoration-none hover-effect">Language</a></li>
+                  <li class="mb-2"><a href="/photo-archives" class="text-light opacity-75 text-decoration-none hover-effect">Photo Archives</a></li>
+                  <li class="mb-2"><a href="/olu-corner" class="text-light opacity-75 text-decoration-none hover-effect">Olu's Corner</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-3">
             <h4 class="h5 fw-semibold mb-3">Contact Us</h4>
-            <address class="text-light opacity-75 fst-normal">
+            <address class="text-light opacity-75 fst-normal small">
               123 Royal Avenue<br>
               Kingdom City, KC 12345<br>
               Email: info@kingdommuseum.org<br>
@@ -139,6 +149,52 @@ export default {
 /* Custom Styles */
 .bg-navbar-footer {
   background-color: #B08B4F !important;
+}
+
+/* Footer adjustments */
+footer .row {
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+}
+
+footer .col-md-3,
+footer .col-md-6 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+footer ul.list-unstyled {
+  margin-bottom: 0;
+}
+
+footer .mb-2 {
+  margin-bottom: 0.25rem !important;
+}
+
+footer h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+footer .text-center h4 {
+  display: block;
+  width: 100%;
+}
+
+footer address {
+  margin-bottom: 0;
+}
+
+/* Compact footer on mobile */
+@media (max-width: 767px) {
+  footer {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  footer .mb-4 {
+    margin-bottom: 1rem !important;
+  }
 }
 
 .sticky-top {
@@ -207,25 +263,97 @@ export default {
 /* Responsive Navigation Adjustments */
 @media (min-width: 768px) and (max-width: 991px) {
   .nav-link {
-    font-size: 0.9rem;
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
+    font-size: 0.85rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
   }
 
   .mx-1 {
-    margin-left: 0.15rem !important;
-    margin-right: 0.15rem !important;
+    margin-left: 0.1rem !important;
+    margin-right: 0.1rem !important;
   }
 
   .mx-md-2 {
-    margin-left: 0.25rem !important;
-    margin-right: 0.25rem !important;
+    margin-left: 0.15rem !important;
+    margin-right: 0.15rem !important;
   }
 }
 
 @media (max-width: 767px) {
   .navbar-nav .nav-link {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
+}
+
+/* Ensure all nav items stay on one line */
+.navbar-nav {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav-link {
+  font-size: 0.85rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+.mx-1 {
+  margin-left: 0.1rem !important;
+  margin-right: 0.1rem !important;
+}
+
+.mx-md-2 {
+  margin-left: 0.15rem !important;
+  margin-right: 0.15rem !important;
+}
+
+/* Adjust navbar container for better fit */
+.container {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* Reduce logo size */
+.navbar-brand img {
+  max-height: 50px;
+  width: auto;
+}
+
+/* Adjust row alignment */
+@media (min-width: 768px) {
+  .row.align-items-center {
+    flex-wrap: nowrap;
+  }
+
+  .col-12.col-md-4 {
+    flex: 0 0 auto;
+    max-width: fit-content;
+  }
+
+  .col-12.col-md-8 {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+/* Smaller font sizes for larger screens */
+@media (min-width: 1200px) {
+  .nav-link {
+    font-size: 0.8rem;
+    padding-left: 0.2rem;
+    padding-right: 0.2rem;
+  }
+}
+
+/* Hide scrollbar but keep functionality */
+.navbar-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.navbar-nav {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>

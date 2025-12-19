@@ -3,7 +3,7 @@
     <div class="container-fluid py-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 mb-0">Ticket Management</h1>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" @click="$inertia.visit('/admin/tickets/create')">
           <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
           </svg>
@@ -24,7 +24,7 @@
                 </div>
                 <div>
                   <h6 class="text-muted small mb-1">Total Tickets</h6>
-                  <h3 class="mb-0">1,248</h3>
+                  <h3 class="mb-0">{{ stats.total }}</h3>
                 </div>
               </div>
             </div>
@@ -42,7 +42,7 @@
                 </div>
                 <div>
                   <h6 class="text-muted small mb-1">Active Tickets</h6>
-                  <h3 class="mb-0">8</h3>
+                  <h3 class="mb-0">{{ stats.active }}</h3>
                 </div>
               </div>
             </div>
@@ -59,8 +59,8 @@
                   </svg>
                 </div>
                 <div>
-                  <h6 class="text-muted small mb-1">Pending Approval</h6>
-                  <h3 class="mb-0">3</h3>
+                  <h6 class="text-muted small mb-1">Inactive Tickets</h6>
+                  <h3 class="mb-0">{{ stats.total - stats.active }}</h3>
                 </div>
               </div>
             </div>
@@ -77,8 +77,8 @@
                   </svg>
                 </div>
                 <div>
-                  <h6 class="text-muted small mb-1">Revenue</h6>
-                  <h3 class="mb-0">₦245,600</h3>
+                  <h6 class="text-muted small mb-1">Avg. Price</h6>
+                  <h3 class="mb-0">{{ formatCurrency(tickets.length ? tickets.reduce((sum, t) => sum + parseFloat(t.price), 0) / tickets.length : 0) }}</h3>
                 </div>
               </div>
             </div>
@@ -91,11 +91,11 @@
           <div class="d-flex justify-content-between align-items-center">
             <h5 class="card-title mb-0">Ticket Types</h5>
             <div class="d-flex">
-              <input type="text" class="form-control form-control-sm me-2" placeholder="Search tickets...">
-              <select class="form-select form-select-sm">
-                <option>All Status</option>
-                <option>Active</option>
-                <option>Inactive</option>
+              <input type="text" class="form-control form-control-sm me-2" placeholder="Search tickets..." v-model="searchTerm">
+              <select class="form-select form-select-sm" v-model="statusFilter">
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
               </select>
             </div>
           </div>
@@ -113,31 +113,31 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr v-for="(ticket, index) in filteredTickets" :key="ticket.id">
                 <td>
-                  <strong>Adult Ticket</strong>
-                  <div class="small text-muted">Standard admission for adults</div>
+                  <strong>{{ ticket.name }}</strong>
+                  <div class="small text-muted">{{ ticket.description || 'No description' }}</div>
                 </td>
-                <td>₦1,500</td>
+                <td>{{ formatCurrency(ticket.price) }}</td>
                 <td>1 Day</td>
                 <td>
-                  <span class="badge bg-success">Active</span>
+                  <span class="badge" :class="ticket.active ? 'bg-success' : 'bg-secondary'">{{ ticket.active ? 'Active' : 'Inactive' }}</span>
                 </td>
-                <td>842</td>
+                <td>-</td>
                 <td>
                   <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-primary">
+                    <button class="btn btn-outline-primary" @click.stop="viewTicket(ticket.id)" title="View Ticket">
                       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                       </svg>
                     </button>
-                    <button class="btn btn-outline-secondary">
+                    <button class="btn btn-outline-secondary" @click.stop="editTicket(ticket.id)" title="Edit Ticket">
                       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                       </svg>
                     </button>
-                    <button class="btn btn-outline-danger">
+                    <button class="btn btn-outline-danger" @click.stop="deleteTicket(ticket.id)" title="Delete Ticket">
                       <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                       </svg>
@@ -145,100 +145,17 @@
                   </div>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <strong>Child Ticket</strong>
-                  <div class="small text-muted">For children under 12 years</div>
-                </td>
-                <td>₦800</td>
-                <td>1 Day</td>
-                <td>
-                  <span class="badge bg-success">Active</span>
-                </td>
-                <td>326</td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-primary">
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                      </svg>
-                    </button>
-                    <button class="btn btn-outline-secondary">
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                      </svg>
-                    </button>
-                    <button class="btn btn-outline-danger">
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                      </svg>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <strong>Senior Citizen</strong>
-                  <div class="small text-muted">Discounted rate for seniors</div>
-                </td>
-                <td>₦1,000</td>
-                <td>1 Day</td>
-                <td>
-                  <span class="badge bg-success">Active</span>
-                </td>
-                <td>187</td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-primary">
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                      </svg>
-                    </button>
-                    <button class="btn btn-outline-secondary">
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                      </svg>
-                    </button>
-                    <button class="btn btn-outline-danger">
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                      </svg>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <strong>VIP Experience</strong>
-                  <div class="small text-muted">Premium access with guided tour</div>
-                </td>
-                <td>₦5,000</td>
-                <td>1 Day</td>
-                <td>
-                  <span class="badge bg-secondary">Inactive</span>
-                </td>
-                <td>45</td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    <button class="btn btn-outline-primary">
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                      </svg>
-                    </button>
-                    <button class="btn btn-outline-secondary">
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                      </svg>
-                    </button>
-                    <button class="btn btn-outline-danger">
-                      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                      </svg>
-                    </button>
-                  </div>
+              <tr v-if="filteredTickets.length === 0">
+                <td colspan="6" class="text-center text-muted py-5">
+                  <i class="bi bi-ticket-perforated display-5 d-block mb-3"></i>
+                  <p class="mb-0">No tickets found</p>
+                  <p class="small mb-3">Try adjusting your search or filter criteria</p>
+                  <button class="btn btn-primary btn-sm" @click="$inertia.visit('/admin/tickets/create')">
+                    <svg class="me-1" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    Add New Ticket
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -247,9 +164,9 @@
         <div class="card-footer bg-white border-top">
           <div class="d-flex justify-content-between align-items-center">
             <div class="text-muted small">
-              Showing 4 of 4 ticket types
+              Showing {{ filteredTickets.length }} of {{ tickets.length }} ticket types
             </div>
-            <nav>
+            <nav v-if="tickets.length > 10">
               <ul class="pagination pagination-sm mb-0">
                 <li class="page-item disabled">
                   <a class="page-link" href="#" tabindex="-1">Previous</a>
@@ -275,6 +192,104 @@ import AdminLayout from '../../../layouts/AdminLayout.vue'
 export default {
   components: {
     AdminLayout
+  },
+  props: {
+    tickets: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data() {
+    return {
+      searchTerm: '',
+      statusFilter: ''
+    }
+  },
+  computed: {
+    filteredTickets() {
+      let filtered = this.tickets;
+
+      if (this.searchTerm) {
+        filtered = filtered.filter(ticket =>
+          ticket.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+      }
+
+      if (this.statusFilter) {
+        filtered = filtered.filter(ticket =>
+          this.statusFilter === 'active' ? ticket.active : !ticket.active
+        );
+      }
+
+      return filtered;
+    },
+    stats() {
+      const total = this.tickets.length;
+      const active = this.tickets.filter(t => t.active).length;
+      return {
+        total,
+        active
+      };
+    }
+  },
+  methods: {
+    formatCurrency(amount) {
+      return new Intl.NumberFormat('en-NG', {
+        style: 'currency',
+        currency: 'NGN'
+      }).format(amount);
+    },
+    viewTicket(id) {
+      if (!id) {
+        console.error('Ticket ID is missing');
+        return;
+      }
+      this.$inertia.visit(`/admin/tickets/${id}`, {
+        preserveScroll: true,
+        onError: (errors) => {
+          console.error('Error viewing ticket:', errors);
+        }
+      });
+    },
+    editTicket(id) {
+      if (!id) {
+        console.error('Ticket ID is missing');
+        return;
+      }
+      this.$inertia.visit(`/admin/tickets/${id}/edit`, {
+        preserveScroll: true,
+        onError: (errors) => {
+          console.error('Error editing ticket:', errors);
+        }
+      });
+    },
+    async deleteTicket(id) {
+      if (!id) {
+        console.error('Ticket ID is missing');
+        return;
+      }
+      const result = await this.$swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      });
+
+      if (result.isConfirmed) {
+        this.$inertia.delete(`/admin/tickets/${id}`, {
+          preserveScroll: true,
+          onSuccess: () => {
+            console.log('Ticket deleted successfully');
+          },
+          onError: (errors) => {
+            console.error('Error deleting ticket:', errors);
+          }
+        });
+      }
+    }
   }
 }
 </script>

@@ -13,68 +13,40 @@ class TicketSeeder extends Seeder
      */
     public function run(): void
     {
-        // General Admission Ticket
-        Ticket::updateOrCreate([
+        Ticket::create([
             'name' => 'General Admission',
-            'type' => 'general'
-        ], [
-            'description' => 'Access to all permanent exhibits with audio guide included',
-            'price' => 15.00,
+            'description' => 'Access to all museum exhibits and galleries',
+            'price' => 2500.00,
+            'type' => 'general',
             'active' => true,
-            'benefits' => [
-                'Access to all permanent exhibits',
-                'Audio guide included',
-                'Daily guided tours',
-                'Free Wi-Fi'
-            ]
+            'benefits' => ['Full museum access', 'Audio guide included', 'Special exhibitions']
         ]);
 
-        // Family Pass
-        Ticket::updateOrCreate([
-            'name' => 'Family Pass',
-            'type' => 'family'
-        ], [
-            'description' => 'Special package for families with children',
-            'price' => 45.00,
-            'active' => true,
-            'benefits' => [
-                'All General Admission benefits',
-                'Priority access to special exhibits',
-                'Children under 12 free',
-                'Family activity pack'
-            ]
-        ]);
-
-        // Senior Ticket
-        Ticket::updateOrCreate([
-            'name' => 'Senior Admission',
-            'type' => 'senior'
-        ], [
-            'description' => 'Discounted admission for seniors 65+',
-            'price' => 12.00,
-            'active' => true,
-            'benefits' => [
-                'Access to all permanent exhibits',
-                'Audio guide included',
-                'Senior discount program',
-                'Priority seating for events'
-            ]
-        ]);
-
-        // Student Ticket
-        Ticket::updateOrCreate([
-            'name' => 'Student Admission',
-            'type' => 'student'
-        ], [
+        Ticket::create([
+            'name' => 'Student Ticket',
             'description' => 'Discounted admission for students with valid ID',
-            'price' => 10.00,
+            'price' => 1500.00,
+            'type' => 'student',
             'active' => true,
-            'benefits' => [
-                'Access to all permanent exhibits',
-                'Audio guide included',
-                'Student discount program',
-                'Study room access'
-            ]
+            'benefits' => ['Full museum access', 'Audio guide included']
+        ]);
+
+        Ticket::create([
+            'name' => 'Senior Citizen',
+            'description' => 'Special rate for visitors 60 years and above',
+            'price' => 2000.00,
+            'type' => 'senior',
+            'active' => true,
+            'benefits' => ['Full museum access', 'Priority entry', 'Comfort seating']
+        ]);
+
+        Ticket::create([
+            'name' => 'Family Package',
+            'description' => 'Great value for families of 4 or more',
+            'price' => 8000.00,
+            'type' => 'family',
+            'active' => true,
+            'benefits' => ['Full museum access for 4 people', 'Audio guides included', 'Lunch vouchers']
         ]);
     }
 }
