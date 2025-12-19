@@ -18,19 +18,45 @@
             <nav class="d-flex justify-content-md-end">
               <ul class="nav">
                 <li class="nav-item">
-                  <a class="nav-link text-light fw-medium mx-2 mx-md-3 hover-effect" href="/">Home</a>
+                  <a class="nav-link text-light fw-medium mx-1 mx-md-2 hover-effect" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-light fw-medium mx-2 mx-md-3 hover-effect" href="/kings">Kings</a>
+                  <a class="nav-link text-light fw-medium mx-1 mx-md-2 hover-effect" href="/historical-events">Timeline</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-light fw-medium mx-2 mx-md-3 hover-effect" href="/kingdoms">Kingdoms</a>
+                  <a class="nav-link text-light fw-medium mx-1 mx-md-2 hover-effect" href="/kings">Kings</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-light fw-medium mx-2 mx-md-3 hover-effect" href="/gallery">Gallery</a>
+                  <a class="nav-link text-light fw-medium mx-1 mx-md-2 hover-effect" href="/kingdoms">Kingdoms</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link text-light fw-medium mx-1 mx-md-2 hover-effect dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Culture
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/festivals">Festivals</a></li>
+                    <li><a class="dropdown-item" href="/foods">Cuisine</a></li>
+                    <li><a class="dropdown-item" href="/language">Language</a></li>
+                  </ul>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-light fw-medium mx-2 mx-md-3 hover-effect" href="/events">Events</a>
+                  <a class="nav-link text-light fw-medium mx-1 mx-md-2 hover-effect" href="/sites">Sites</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-light fw-medium mx-1 mx-md-2 hover-effect" href="/gallery">Gallery</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-light fw-medium mx-1 mx-md-2 hover-effect" href="/photo-archives">Photo Archives</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link text-light fw-medium mx-1 mx-md-2 hover-effect dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Community
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/personalities">Notable Figures</a></li>
+                    <li><a class="dropdown-item" href="/oral-histories">Oral Histories</a></li>
+                    <li><a class="dropdown-item" href="/diaspora">Diaspora</a></li>
+                  </ul>
                 </li>
               </ul>
             </nav>
@@ -67,10 +93,19 @@
             <h4 class="h5 fw-semibold mb-3">Quick Links</h4>
             <ul class="list-unstyled">
               <li class="mb-2"><a href="/" class="text-light opacity-75 text-decoration-none hover-effect">Home</a></li>
+              <li class="mb-2"><a href="/historical-events" class="text-light opacity-75 text-decoration-none hover-effect">Timeline</a></li>
               <li class="mb-2"><a href="/kings" class="text-light opacity-75 text-decoration-none hover-effect">Kings & Queens</a></li>
               <li class="mb-2"><a href="/kingdoms" class="text-light opacity-75 text-decoration-none hover-effect">Kingdoms & Dynasties</a></li>
+              <li class="mb-2"><a href="/festivals" class="text-light opacity-75 text-decoration-none hover-effect">Festivals</a></li>
+              <li class="mb-2"><a href="/foods" class="text-light opacity-75 text-decoration-none hover-effect">Cuisine</a></li>
+              <li class="mb-2"><a href="/sites" class="text-light opacity-75 text-decoration-none hover-effect">Historical Sites</a></li>
               <li class="mb-2"><a href="/gallery" class="text-light opacity-75 text-decoration-none hover-effect">Artifact Gallery</a></li>
-              <li class="mb-2"><a href="/events" class="text-light opacity-75 text-decoration-none hover-effect">Events</a></li>
+              <li class="mb-2"><a href="/personalities" class="text-light opacity-75 text-decoration-none hover-effect">Notable Figures</a></li>
+              <li class="mb-2"><a href="/oral-histories" class="text-light opacity-75 text-decoration-none hover-effect">Oral Histories</a></li>
+              <li class="mb-2"><a href="/diaspora" class="text-light opacity-75 text-decoration-none hover-effect">Diaspora</a></li>
+              <li class="mb-2"><a href="/language" class="text-light opacity-75 text-decoration-none hover-effect">Language</a></li>
+              <li class="mb-2"><a href="/photo-archives" class="text-light opacity-75 text-decoration-none hover-effect">Photo Archives</a></li>
+              <li class="mb-2"><a href="/olu-corner" class="text-light opacity-75 text-decoration-none hover-effect">Olu's Corner</a></li>
             </ul>
           </div>
           <div class="col-12 col-md-4">
@@ -167,5 +202,30 @@ export default {
 
 .animate__fadeInDown {
   animation: fadeInDown 0.5s ease-out;
+}
+
+/* Responsive Navigation Adjustments */
+@media (min-width: 768px) and (max-width: 991px) {
+  .nav-link {
+    font-size: 0.9rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .mx-1 {
+    margin-left: 0.15rem !important;
+    margin-right: 0.15rem !important;
+  }
+
+  .mx-md-2 {
+    margin-left: 0.25rem !important;
+    margin-right: 0.25rem !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .navbar-nav .nav-link {
+    font-size: 0.85rem;
+  }
 }
 </style>

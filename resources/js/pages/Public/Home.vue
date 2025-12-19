@@ -426,6 +426,70 @@
                                 </div>
                             </section>
 
+                            <!-- Museum Sections Preview -->
+                            <section class="museum-preview mb-5">
+                                <div class="row mb-4">
+                                    <div class="col-12 text-center">
+                                        <h2 class="h2 fw-bold text-dark mb-4">Explore Ijebu Heritage</h2>
+                                        <p class="lead text-muted mb-5">Discover the rich cultural traditions and history of the Ijebu people</p>
+                                    </div>
+                                </div>
+
+                                <div class="row g-4">
+                                    <div class="col-12 col-md-6 col-lg-3">
+                                        <div class="card h-100 border-0 shadow-sm hover-lift text-center">
+                                            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                                                <div class="icon-circle bg-primary bg-opacity-10 text-primary mb-3">
+                                                    <i class="bi bi-calendar-event" style="font-size: 2rem;"></i>
+                                                </div>
+                                                <h3 class="h5 fw-bold text-dark mb-3">Timeline</h3>
+                                                <p class="text-muted mb-4">Chronological history of Ijebu</p>
+                                                <a href="/historical-events" class="btn btn-outline-primary stretched-link">Explore Timeline</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-3">
+                                        <div class="card h-100 border-0 shadow-sm hover-lift text-center">
+                                            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                                                <div class="icon-circle bg-success bg-opacity-10 text-success mb-3">
+                                                    <i class="bi bi-people" style="font-size: 2rem;"></i>
+                                                </div>
+                                                <h3 class="h5 fw-bold text-dark mb-3">Culture</h3>
+                                                <p class="text-muted mb-4">Festivals, food, and traditions</p>
+                                                <a href="/festivals" class="btn btn-outline-success stretched-link">View Culture</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-3">
+                                        <div class="card h-100 border-0 shadow-sm hover-lift text-center">
+                                            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                                                <div class="icon-circle bg-warning bg-opacity-10 text-warning mb-3">
+                                                    <i class="bi bi-map" style="font-size: 2rem;"></i>
+                                                </div>
+                                                <h3 class="h5 fw-bold text-dark mb-3">Sites</h3>
+                                                <p class="text-muted mb-4">Historical landmarks</p>
+                                                <a href="/sites" class="btn btn-outline-warning stretched-link">Visit Sites</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-3">
+                                        <div class="card h-100 border-0 shadow-sm hover-lift text-center">
+                                            <div class="card-body d-flex flex-column align-items-center justify-content-center p-4">
+                                                <div class="icon-circle bg-info bg-opacity-10 text-info mb-3">
+                                                    <i class="bi bi-book" style="font-size: 2rem;"></i>
+                                                </div>
+                                                <h3 class="h5 fw-bold text-dark mb-3">Community</h3>
+                                                <p class="text-muted mb-4">Stories and achievements</p>
+                                                <a href="/personalities" class="btn btn-outline-info stretched-link">Meet People</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
                             <!-- Call to Action Section -->
                             <section class="cta-section bg-gradient rounded-4 p-5 text-center">
                                 <div class="row justify-content-center">
@@ -747,6 +811,16 @@ export default {
 .gallery-item:hover {
     transform: scale(1.03);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Icon circle */
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Animations */
