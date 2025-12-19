@@ -113,9 +113,19 @@ export default {
     artifacts: Array,
   },
   methods: {
-    destroy(id) {
-      if (confirm('Are you sure you want to delete this artifact?')) {
-        this.$inertia.delete(this.$route('admin.artifacts.destroy', id))
+    async destroy(id) {
+      const result = await this.$swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      });
+
+      if (result.isConfirmed) {
+        this.$inertia.delete(this.$route('admin.artifacts.destroy', id));
       }
     }
   }

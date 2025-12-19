@@ -29,8 +29,16 @@
 
                             <div class="row g-4 mb-5">
                                 <div v-for="(ticket, index) in tickets" :key="ticket.id" class="col-12 col-md-6">
-                                    <div class="card h-100" :class="{ 'border-primary border-2': ticket.type === 'general' }">
+                                    <div
+                                        class="card h-100 ticket-card position-relative overflow-hidden"
+                                        :class="{ 'border-primary border-2': ticket.type === 'general' }"
+                                        @mouseenter="hoveredTicket = ticket.id"
+                                        @mouseleave="hoveredTicket = null"
+                                    >
                                         <div class="card-body">
+                                            <div v-if="ticket.type === 'general'" class="position-absolute top-0 end-0 mt-3 me-3">
+                                                <span class="badge bg-primary">Most Popular</span>
+                                            </div>
                                             <h3 class="h4 fw-bold" :class="{ 'text-primary': ticket.type === 'general', 'text-dark': ticket.type !== 'general' }">{{ ticket.name }}</h3>
                                             <div class="price-display mb-3">
                                                 <span class="display-5 fw-bold text-dark">${{ ticket.price }}</span>
@@ -43,7 +51,18 @@
                                                     <i class="bi bi-check-circle-fill text-success me-2"></i>{{ benefit }}
                                                 </li>
                                             </ul>
-                                            <button class="btn" :class="{ 'btn-primary': ticket.type === 'general', 'btn-outline-primary': ticket.type !== 'general' }" w-100>Select Tickets</button>
+                                            <button
+                                                class="btn w-100"
+                                                :class="{
+                                                    'btn-primary': ticket.type === 'general',
+                                                    'btn-outline-primary': ticket.type !== 'general',
+                                                    'btn-lg': hoveredTicket === ticket.id
+                                                }"
+                                            >
+                                                <span v-if="hoveredTicket === ticket.id">✨ </span>
+                                                Select Tickets
+                                                <span v-if="hoveredTicket === ticket.id"> ✨</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -119,6 +138,11 @@ export default {
     },
     components: {
         AppLayout,
+    },
+    data() {
+        return {
+            hoveredTicket: null
+        }
     }
 }
 </script>
@@ -126,5 +150,24 @@ export default {
 <style scoped>
 .price-display {
     min-height: 60px;
+}
+
+.ticket-card {
+    transition: all 0.3s ease;
+    transform: translateY(0);
+}
+
+.ticket-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.ticket-card:hover .btn {
+    transform: scale(1.05);
+    transition: all 0.2s ease;
+}
+
+.ticket-card .btn {
+    transition: all 0.2s ease;
 }
 </style>

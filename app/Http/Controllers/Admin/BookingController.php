@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class BookingController extends Controller
 {
@@ -13,7 +14,10 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
+        $bookings = Booking::with(['ticket', 'user'])->latest()->get();
+        return Inertia::render('Admin/Bookings/Index', [
+            'bookings' => $bookings
+        ]);
     }
 
     /**
@@ -21,7 +25,7 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Bookings/Create');
     }
 
     /**
@@ -29,7 +33,19 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'ticket_id' => 'required|exists:tickets,id',
+            'user_id' => 'required|exists:users,id',
+            'quantity' => 'required|integer|min:1',
+            'booking_date' => 'required|date',
+            'status' => 'required|in:pending,confirmed,cancelled',
+            'special_requests' => 'nullable|string',
+        ]);
+
+        $booking = Booking::create($validated);
+
+        return redirect()->route('admin.bookings.index')
+            ->with('success', 'Booking created successfully.');
     }
 
     /**
@@ -37,7 +53,10 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        //
+        $booking->load(['ticket', 'user']);
+        return Inertia::render('Admin/Bookings/Show', [
+            'booking' => $booking
+        ]);
     }
 
     /**
@@ -45,7 +64,10 @@ class BookingController extends Controller
      */
     public function edit(Booking $booking)
     {
-        //
+        $booking->load(['ticket', 'user']);
+        return Inertia::render('Admin/Bookings/Edit', [
+            'booking' => $booking
+        ]);
     }
 
     /**
@@ -53,7 +75,19 @@ class BookingController extends Controller
      */
     public function update(Request $request, Booking $booking)
     {
-        //
+        $validated = $request->validate([
+            'ticket_id' => 'required|exists:tickets,id',
+            'user_id' => 'required|exists:users,id',
+            'quantity' => 'required|integer|min:1',
+            'booking_date' => 'required|date',
+            'status' => 'required|in:pending,confirmed,cancelled',
+            'special_requests' => 'nullable|string',
+        ]);
+
+        $booking->update($validated);
+
+        return redirect()->route('admin.bookings.index')
+            ->with('success', 'Booking updated successfully.');
     }
 
     /**
@@ -61,6 +95,9 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        //
+        $booking->delete();
+
+        return redirect()->route('admin.bookings.index')
+            ->with('success', 'Booking deleted successfully.');
     }
 }

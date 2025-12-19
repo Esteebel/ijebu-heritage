@@ -267,18 +267,46 @@ export default {
       }
       return classes[status] || 'bg-secondary'
     },
-    publishItem(item) {
-      if (confirm(`Are you sure you want to publish "${item.title}"?`)) {
+    async publishItem(item) {
+      const result = await this.$swal.fire({
+        title: 'Publish Item?',
+        text: `Are you sure you want to publish "${item.title}"?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, publish it!'
+      });
+
+      if (result.isConfirmed) {
         // In a real implementation, this would make an API call
-        console.log('Publishing item:', item)
-        alert(`Item "${item.title}" would be published in a real implementation.`)
+        console.log('Publishing item:', item);
+        this.$swal.fire(
+          'Published!',
+          `Item "${item.title}" has been published.`,
+          'success'
+        );
       }
     },
-    deleteItem(item) {
-      if (confirm(`Are you sure you want to delete "${item.title}"? This action cannot be undone.`)) {
+    async deleteItem(item) {
+      const result = await this.$swal.fire({
+        title: 'Are you sure?',
+        text: `Are you sure you want to delete "${item.title}"? This action cannot be undone.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      });
+
+      if (result.isConfirmed) {
         // In a real implementation, this would make an API call
-        console.log('Deleting item:', item)
-        alert(`Item "${item.title}" would be deleted in a real implementation.`)
+        console.log('Deleting item:', item);
+        this.$swal.fire(
+          'Deleted!',
+          `Item "${item.title}" has been deleted.`,
+          'success'
+        );
       }
     }
   }

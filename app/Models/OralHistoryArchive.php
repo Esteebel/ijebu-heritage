@@ -34,6 +34,11 @@ class OralHistoryArchive extends Model
         return $this->belongsTo(Media::class, 'audio_file_id');
     }
 
+    public function videoFile()
+    {
+        return $this->belongsTo(Media::class, 'video_file_id');
+    }
+
     public function featuredMedia()
     {
         return $this->belongsTo(Media::class, 'featured_media_id');

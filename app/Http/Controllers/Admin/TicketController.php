@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TicketController extends Controller
 {
@@ -13,7 +14,10 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
+        $tickets = Ticket::latest()->get();
+        return Inertia::render('Admin/Tickets/Index', [
+            'tickets' => $tickets
+        ]);
     }
 
     /**
@@ -21,7 +25,7 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Tickets/Create');
     }
 
     /**
@@ -29,7 +33,21 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'type' => 'required|string|max:255',
+            'active' => 'boolean',
+            'benefits' => 'nullable|array',
+        ]);
+
+        $validated['active'] = $request->boolean('active', true);
+
+        $ticket = Ticket::create($validated);
+
+        return redirect()->route('admin.tickets.index')
+            ->with('success', 'Ticket created successfully.');
     }
 
     /**
@@ -37,7 +55,9 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        return Inertia::render('Admin/Tickets/Show', [
+            'ticket' => $ticket
+        ]);
     }
 
     /**
@@ -45,7 +65,9 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        //
+        return Inertia::render('Admin/Tickets/Edit', [
+            'ticket' => $ticket
+        ]);
     }
 
     /**
@@ -53,7 +75,21 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'type' => 'required|string|max:255',
+            'active' => 'boolean',
+            'benefits' => 'nullable|array',
+        ]);
+
+        $validated['active'] = $request->boolean('active', true);
+
+        $ticket->update($validated);
+
+        return redirect()->route('admin.tickets.index')
+            ->with('success', 'Ticket updated successfully.');
     }
 
     /**
@@ -61,6 +97,9 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        //
+        $ticket->delete();
+
+        return redirect()->route('admin.tickets.index')
+            ->with('success', 'Ticket deleted successfully.');
     }
 }
