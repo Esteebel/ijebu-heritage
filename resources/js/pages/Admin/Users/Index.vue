@@ -73,10 +73,24 @@ export default {
     users: Array
   },
   methods: {
-    deleteUser(userId) {
-      if (confirm('Are you sure you want to delete this user?')) {
+    async deleteUser(userId) {
+      const result = await this.$swal.fire({
+        title: 'Are you sure?',
+        text: 'Are you sure you want to delete this user?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      });
+
+      if (result.isConfirmed) {
         // In a real application, you would make an API call to delete the user
-        alert('User deletion functionality would be implemented here.')
+        this.$swal.fire(
+          'Deleted!',
+          'User has been deleted.',
+          'success'
+        );
       }
     }
   }
